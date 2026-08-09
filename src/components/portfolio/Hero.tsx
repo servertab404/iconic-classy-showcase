@@ -15,9 +15,11 @@ export function Hero() {
       <div className="absolute inset-0 -z-10">
         {reduced ? null : (
           <ClientOnly fallback={null}>
-            <Suspense fallback={null}>
-              <NeuralNetwork />
-            </Suspense>
+            <SafeBoundary>
+              <Suspense fallback={null}>
+                <NeuralNetwork />
+              </Suspense>
+            </SafeBoundary>
           </ClientOnly>
         )}
       </div>
