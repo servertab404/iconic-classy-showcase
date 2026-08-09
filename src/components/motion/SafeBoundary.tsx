@@ -5,17 +5,17 @@ import { Component, type ReactNode } from "react";
  * an unsupported browser degrades to nothing instead of crashing the whole page.
  */
 export class SafeBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
-  state = { failed: false };
+  override state = { failed: false };
 
   static getDerivedStateFromError() {
     return { failed: true };
   }
 
-  componentDidCatch(error: unknown) {
+  override componentDidCatch(error: unknown) {
     console.warn("Optional visual effect disabled:", error);
   }
 
-  render() {
+  override render() {
     if (this.state.failed) return null;
     return this.props.children;
   }
