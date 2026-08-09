@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { ArrowDown, Mail } from "lucide-react";
 import { ScrambleText } from "./ScrambleText";
 import { MagneticLink } from "../motion/MagneticLink";
+import { SafeBoundary } from "../motion/SafeBoundary";
 
 const NeuralNetwork = lazy(() => import("./NeuralNetwork"));
 
@@ -15,9 +16,11 @@ export function Hero() {
       <div className="absolute inset-0 -z-10">
         {reduced ? null : (
           <ClientOnly fallback={null}>
-            <Suspense fallback={null}>
-              <NeuralNetwork />
-            </Suspense>
+            <SafeBoundary>
+              <Suspense fallback={null}>
+                <NeuralNetwork />
+              </Suspense>
+            </SafeBoundary>
           </ClientOnly>
         )}
       </div>
