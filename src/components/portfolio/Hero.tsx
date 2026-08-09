@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { ArrowDown, Mail } from "lucide-react";
 import { ScrambleText } from "./ScrambleText";
 import { MagneticLink } from "../motion/MagneticLink";
+import { SafeBoundary } from "../motion/SafeBoundary";
 
 const NeuralNetwork = lazy(() => import("./NeuralNetwork"));
 
