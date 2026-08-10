@@ -40,6 +40,7 @@ function Index() {
   const { scrollYProgress } = useScroll();
   const hue = useTransform(scrollYProgress, [0, 1], [0, 60]);
   const meshY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+  const hueFilter = useTransform(hue, (h) => `hue-rotate(${h}deg)`);
 
   return (
     <>
@@ -51,7 +52,7 @@ function Index() {
 
       <motion.div
         aria-hidden="true"
-        style={{ filter: useTransform(hue, (h) => `hue-rotate(${h}deg)`), y: meshY }}
+        style={{ filter: hueFilter, y: meshY }}
         className="pointer-events-none fixed inset-0 -z-20 opacity-50"
       >
         <div className="absolute top-[18%] -left-40 size-[38rem] rounded-full bg-magenta opacity-20 blur-[170px]" />
