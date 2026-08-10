@@ -23,34 +23,38 @@ export const Route = createFileRoute("/probe")({
   component: Probe,
 });
 
-const PARTS: Record<string, React.ComponentType> = {
-  hero: Hero,
-  about: About,
-  skills: Skills,
-  projects: Projects,
-  education: Education,
-  certs: Certifications,
-  resume: Resume,
-  blog: Blog,
-  contact: Contact,
-  nav: SiteNav,
-  footer: SiteFooter,
-  cosmos: Cosmos,
-  intro: IntroLoader,
-  cursor: CustomCursor,
-  smooth: SmoothScroll,
-  divider: GradientDivider,
-};
+const ORDER: React.ComponentType[] = [
+  IntroLoader,
+  SmoothScroll,
+  CustomCursor,
+  Cosmos,
+  SiteNav,
+  Hero,
+  GradientDivider,
+  About,
+  Skills,
+  Projects,
+  Education,
+  Certifications,
+  Resume,
+  Blog,
+  Contact,
+  SiteFooter,
+];
 
 function Probe() {
   const [n, setN] = useState(0);
   useEffect(() => setN(1), []);
-  const key = typeof window === "undefined" ? "" : new URLSearchParams(location.search).get("p") || "";
-  const Part = PARTS[key];
+  const count =
+    typeof window === "undefined"
+      ? ORDER.length
+      : Number(new URLSearchParams(location.search).get("n") ?? ORDER.length);
   return (
     <div>
       <div id="probe">hydrated:{n}</div>
-      {Part ? <Part /> : null}
+      {ORDER.slice(0, count).map((Part, i) => (
+        <Part key={i} />
+      ))}
     </div>
   );
 }
