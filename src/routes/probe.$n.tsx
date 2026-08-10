@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useScroll, useTransform } from "motion/react";
 import { Hero } from "@/components/portfolio/Hero";
 import {
   About,
@@ -44,6 +45,9 @@ const ORDER: React.ComponentType[] = [
 
 function Probe() {
   const { n } = Route.useParams();
+  const { scrollYProgress } = useScroll();
+  const sy = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+  void sy;
   const [h, setH] = useState(0);
   useEffect(() => setH(1), []);
   return (
