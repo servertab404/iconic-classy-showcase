@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden">
       <div className="absolute inset-0 -z-10">
-        {true ? null : (
+        {reduced ? null : (
           <ClientOnly fallback={null}>
             <SafeBoundary>
               <Suspense fallback={null}>

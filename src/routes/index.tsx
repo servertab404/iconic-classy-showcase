@@ -43,7 +43,7 @@ function Index() {
   const hueFilter = useTransform(hue, (h) => `hue-rotate(${h}deg)`);
 
   return (
-    <>
+    <div>
       <IntroLoader />
       <SmoothScroll />
       <CustomCursor />
@@ -80,6 +80,6 @@ function Index() {
       </main>
 
       <SiteFooter />
-    </>
+    </div>
   );
 }
