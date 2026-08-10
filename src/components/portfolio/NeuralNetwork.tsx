@@ -27,12 +27,46 @@ export default function NeuralNetwork() {
     renderer.domElement.style.height = "100%";
     renderer.domElement.style.display = "block";
 
+    // --- Deep starfield (static, parallax-rotating) ---
+    const starCount = isCoarse ? 500 : 1400;
+    const starPos = new Float32Array(starCount * 3);
+    const starCol = new Float32Array(starCount * 3);
+    const white = new THREE.Color("#EAF2FF");
+    const iceBlue = new THREE.Color("#8FD8FF");
+    const pinkStar = new THREE.Color("#FF9BE0");
+    for (let i = 0; i < starCount; i++) {
+      starPos[i * 3] = (Math.random() - 0.5) * 40;
+      starPos[i * 3 + 1] = (Math.random() - 0.5) * 24;
+      starPos[i * 3 + 2] = -6 - Math.random() * 18;
+      const r = Math.random();
+      const c = r < 0.08 ? pinkStar : r < 0.24 ? iceBlue : white;
+      const b = 0.4 + Math.random() * 0.6;
+      starCol[i * 3] = c.r * b;
+      starCol[i * 3 + 1] = c.g * b;
+      starCol[i * 3 + 2] = c.b * b;
+    }
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+    starGeo.setAttribute("color", new THREE.BufferAttribute(starCol, 3));
+    const stars = new THREE.Points(
+      starGeo,
+      new THREE.PointsMaterial({
+        size: 0.06,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.9,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      }),
+    );
+    scene.add(stars);
+
     const positions = new Float32Array(count * 3);
     const velocities = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const violet = new THREE.Color("#7C6CFF");
-    const cyan = new THREE.Color("#00D9FF");
-    const amber = new THREE.Color("#FFB454");
+    const violet = new THREE.Color("#8B5BFF");
+    const cyan = new THREE.Color("#22E1FF");
+    const magenta = new THREE.Color("#FF5FD1");
 
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 14;
@@ -41,7 +75,10 @@ export default function NeuralNetwork() {
       velocities[i * 3] = (Math.random() - 0.5) * 0.006;
       velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.006;
       velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.003;
-      const c = Math.random() < 0.06 ? amber : violet.clone().lerp(cyan, Math.random());
+      const c =
+        Math.random() < 0.28
+          ? magenta.clone().lerp(violet, Math.random())
+          : violet.clone().lerp(cyan, Math.random());
       colors[i * 3] = c.r;
       colors[i * 3 + 1] = c.g;
       colors[i * 3 + 2] = c.b;
@@ -53,15 +90,16 @@ export default function NeuralNetwork() {
     const nodes = new THREE.Points(
       nodeGeo,
       new THREE.PointsMaterial({
-        size: 0.075,
+        size: 0.085,
         vertexColors: true,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.95,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
     );
     scene.add(nodes);
+
 
     const maxLinks = count * 8;
     const linePos = new Float32Array(maxLinks * 6);
@@ -176,7 +214,15 @@ export default function NeuralNetwork() {
       nodes.rotation.x = -pointer.y * 0.08;
       lines.rotation.copy(nodes.rotation);
 
+      // Slow galactic drift + gentle parallax on the far starfield
+      stars.rotation.z += 0.00012;
+      stars.rotation.y = pointer.x * 0.03;
+      stars.rotation.x = -pointer.y * 0.02;
+      const tw = 0.75 + Math.sin(performance.now() * 0.0009) * 0.15;
+      (stars.material as THREE.PointsMaterial).opacity = tw;
+
       renderer.render(scene, camera);
+
     };
     tick();
 
@@ -187,8 +233,10 @@ export default function NeuralNetwork() {
       ro.disconnect();
       nodeGeo.dispose();
       lineGeo.dispose();
+      starGeo.dispose();
       (nodes.material as THREE.Material).dispose();
       (lines.material as THREE.Material).dispose();
+      (stars.material as THREE.Material).dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };

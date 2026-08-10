@@ -36,8 +36,9 @@ export function IntroLoader() {
           <svg width="150" height="110" viewBox="0 0 150 110" fill="none">
             <defs>
               <linearGradient id="intro-gradient" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#7C6CFF" />
-                <stop offset="100%" stopColor="#00D9FF" />
+                <stop offset="0%" stopColor="#FF5FD1" />
+                <stop offset="55%" stopColor="#7C6CFF" />
+                <stop offset="100%" stopColor="#22E1FF" />
               </linearGradient>
             </defs>
             <motion.path

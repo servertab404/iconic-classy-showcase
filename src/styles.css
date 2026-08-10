@@ -40,6 +40,8 @@
   --color-violet: var(--violet);
   --color-cyan: var(--cyan);
   --color-amber: var(--amber);
+  --color-magenta: var(--magenta);
+  --color-starlight: var(--starlight);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -50,39 +52,59 @@
 :root {
   --radius: 0.875rem;
 
-  --background: oklch(0.145 0.017 285);
-  --background-deep: oklch(0.115 0.015 285);
-  --foreground: oklch(0.96 0.004 285);
-  --card: oklch(0.19 0.017 285);
-  --card-foreground: oklch(0.96 0.004 285);
-  --popover: oklch(0.19 0.017 285);
-  --popover-foreground: oklch(0.96 0.004 285);
+  /* Deep space: near-black indigo, never flat black */
+  --background: oklch(0.135 0.035 285);
+  --background-deep: oklch(0.095 0.03 288);
+  --foreground: oklch(0.97 0.008 280);
+  --card: oklch(0.185 0.04 288);
+  --card-foreground: oklch(0.97 0.008 280);
+  --popover: oklch(0.185 0.04 288);
+  --popover-foreground: oklch(0.97 0.008 280);
 
-  --primary: oklch(0.66 0.19 288);
-  --primary-foreground: oklch(0.16 0.02 285);
-  --secondary: oklch(0.24 0.02 285);
-  --secondary-foreground: oklch(0.94 0.004 285);
-  --muted: oklch(0.24 0.02 285);
-  --muted-foreground: oklch(0.7 0.015 285);
-  --accent: oklch(0.8 0.14 210);
-  --accent-foreground: oklch(0.16 0.02 285);
+  --primary: oklch(0.68 0.21 300);
+  --primary-foreground: oklch(0.14 0.03 288);
+  --secondary: oklch(0.235 0.04 288);
+  --secondary-foreground: oklch(0.95 0.008 280);
+  --muted: oklch(0.235 0.04 288);
+  --muted-foreground: oklch(0.74 0.03 285);
+  --accent: oklch(0.82 0.15 205);
+  --accent-foreground: oklch(0.14 0.03 288);
 
-  --violet: oklch(0.66 0.19 288);
-  --cyan: oklch(0.81 0.15 208);
-  --amber: oklch(0.82 0.13 78);
+  /* Nebula accents */
+  --violet: oklch(0.68 0.21 300);
+  --cyan: oklch(0.84 0.15 200);
+  --amber: oklch(0.84 0.15 62);
+  --magenta: oklch(0.7 0.24 340);
+  --starlight: oklch(0.98 0.02 260);
 
   --destructive: oklch(0.62 0.22 25);
   --destructive-foreground: oklch(0.97 0.005 285);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.66 0.19 288);
+  --ring: oklch(0.68 0.21 300);
 
-  --gradient-accent: linear-gradient(100deg, var(--violet), var(--cyan));
-  --gradient-page: linear-gradient(180deg, oklch(0.115 0.015 285), oklch(0.155 0.018 285));
-  --glow-violet: 0 0 60px -12px color-mix(in oklab, var(--violet) 65%, transparent);
-  --glow-cyan: 0 0 60px -12px color-mix(in oklab, var(--cyan) 55%, transparent);
-  --shadow-card: 0 24px 60px -30px oklch(0 0 0 / 80%);
+  --gradient-accent: linear-gradient(100deg, var(--magenta), var(--violet) 45%, var(--cyan));
+  --gradient-page: radial-gradient(
+      120% 90% at 15% -10%,
+      color-mix(in oklab, var(--violet) 22%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      100% 80% at 90% 10%,
+      color-mix(in oklab, var(--magenta) 16%, transparent),
+      transparent 65%
+    ),
+    radial-gradient(
+      120% 100% at 50% 110%,
+      color-mix(in oklab, var(--cyan) 14%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(180deg, oklch(0.095 0.03 288), oklch(0.15 0.04 292));
+  --glow-violet: 0 0 70px -12px color-mix(in oklab, var(--violet) 75%, transparent);
+  --glow-cyan: 0 0 70px -12px color-mix(in oklab, var(--cyan) 60%, transparent);
+  --shadow-card: 0 24px 60px -30px oklch(0 0 0 / 85%);
 }
+
 
 @layer base {
   * {
@@ -210,4 +232,110 @@
   @media (pointer: fine) {
     cursor: none;
   }
+}
+
+/* ---------- Cosmic layers ---------- */
+
+@utility starfield {
+  background-image:
+    radial-gradient(1.4px 1.4px at 12% 18%, var(--starlight), transparent 60%),
+    radial-gradient(1.2px 1.2px at 74% 8%, var(--starlight), transparent 60%),
+    radial-gradient(1.6px 1.6px at 43% 62%, var(--starlight), transparent 60%),
+    radial-gradient(1px 1px at 88% 44%, var(--cyan), transparent 60%),
+    radial-gradient(1.3px 1.3px at 22% 78%, var(--starlight), transparent 60%),
+    radial-gradient(1.1px 1.1px at 62% 88%, var(--magenta), transparent 60%),
+    radial-gradient(1px 1px at 33% 33%, var(--starlight), transparent 60%),
+    radial-gradient(1.5px 1.5px at 92% 72%, var(--starlight), transparent 60%),
+    radial-gradient(1px 1px at 6% 52%, var(--cyan), transparent 60%),
+    radial-gradient(1.2px 1.2px at 55% 24%, var(--starlight), transparent 60%);
+  background-size: 420px 420px;
+  background-repeat: repeat;
+}
+
+@utility twinkle {
+  animation: twinkle-fade 5.5s ease-in-out infinite;
+}
+
+@keyframes twinkle-fade {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes star-drift {
+  from {
+    background-position:
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      420px 420px,
+      420px 420px,
+      420px 420px,
+      420px 420px,
+      420px 420px,
+      420px 420px,
+      420px 420px,
+      420px 420px,
+      420px 420px,
+      420px 420px;
+  }
+}
+
+@utility star-drift-slow {
+  animation: star-drift 260s linear infinite;
+}
+
+@utility star-drift-fast {
+  animation: star-drift 90s linear infinite;
+}
+
+@utility shooting-star {
+  position: absolute;
+  height: 1px;
+  width: 140px;
+  background: linear-gradient(90deg, transparent, var(--starlight), transparent);
+  filter: drop-shadow(0 0 6px var(--cyan));
+  opacity: 0;
+  animation: shoot 9s ease-in infinite;
+}
+
+@keyframes shoot {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(18deg) scaleX(0.2);
+  }
+  4% {
+    opacity: 1;
+  }
+  16% {
+    opacity: 0;
+    transform: translate3d(70vw, 26vh, 0) rotate(18deg) scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(70vw, 26vh, 0) rotate(18deg) scaleX(1);
+  }
+}
+
+@utility nebula {
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in oklab, var(--magenta) 45%, transparent),
+    color-mix(in oklab, var(--violet) 25%, transparent) 45%,
+    transparent 70%
+  );
 }
