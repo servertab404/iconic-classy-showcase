@@ -16,6 +16,7 @@ import { GradientDivider } from "@/components/motion/GradientDivider";
 import { CustomCursor } from "@/components/motion/CustomCursor";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { IntroLoader } from "@/components/portfolio/IntroLoader";
+import { Cosmos } from "@/components/motion/Cosmos";
 
 const TITLE = "Iconic Classy — BCA AI/ML Student & Aspiring ML Engineer";
 const DESCRIPTION =
@@ -45,16 +46,19 @@ function Index() {
       <IntroLoader />
       <SmoothScroll />
       <CustomCursor />
+      <Cosmos />
       <SiteNav />
 
       <motion.div
         aria-hidden="true"
         style={{ filter: useTransform(hue, (h) => `hue-rotate(${h}deg)`), y: meshY }}
-        className="pointer-events-none fixed inset-0 -z-20 opacity-40"
+        className="pointer-events-none fixed inset-0 -z-20 opacity-50"
       >
-        <div className="absolute top-[20%] -left-40 size-[36rem] rounded-full bg-violet opacity-20 blur-[160px]" />
-        <div className="absolute right-[-10%] bottom-[10%] size-[32rem] rounded-full bg-cyan opacity-15 blur-[160px]" />
+        <div className="absolute top-[18%] -left-40 size-[38rem] rounded-full bg-magenta opacity-20 blur-[170px]" />
+        <div className="absolute right-[-10%] bottom-[8%] size-[34rem] rounded-full bg-cyan opacity-15 blur-[170px]" />
+        <div className="absolute top-[55%] left-[35%] size-[26rem] rounded-full bg-violet opacity-20 blur-[150px]" />
       </motion.div>
+
 
       <main>
         <Hero />

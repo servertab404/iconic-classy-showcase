@@ -6,7 +6,7 @@ import { ScrambleText } from "./ScrambleText";
 import { MagneticLink } from "../motion/MagneticLink";
 import { SafeBoundary } from "../motion/SafeBoundary";
 
-const NeuralNetwork = lazy(() => import("./NeuralNetwork"));
+const NeuralNetwork = lazy(() => import("./NeuralNetwork")); const DISABLED = true;
 
 export function Hero() {
   const reduced = useReducedMotion();
@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden">
       <div className="absolute inset-0 -z-10">
-        {reduced ? null : (
+        {true ? null : (
           <ClientOnly fallback={null}>
             <SafeBoundary>
               <Suspense fallback={null}>
