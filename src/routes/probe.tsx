@@ -22,7 +22,7 @@ export const Route = createFileRoute("/probe")({
   component: Probe,
 });
 
-const PARTS: Record<string, () => JSX.Element> = {
+const PARTS: Record<string, React.ComponentType> = {
   hero: Hero,
   about: About,
   skills: Skills,
