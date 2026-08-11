@@ -58,7 +58,7 @@ export default function NeuralNetwork() {
         size: 0.06,
         vertexColors: true,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.6,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
@@ -68,9 +68,9 @@ export default function NeuralNetwork() {
     const positions = new Float32Array(count * 3);
     const velocities = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const violet = new THREE.Color("#8B5BFF");
+    const violet = new THREE.Color("#7C6CFF");
     const cyan = new THREE.Color("#22E1FF");
-    const magenta = new THREE.Color("#FF5FD1");
+    const magenta = new THREE.Color("#9C7CFF");
 
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 14;
@@ -97,7 +97,7 @@ export default function NeuralNetwork() {
         size: 0.085,
         vertexColors: true,
         transparent: true,
-        opacity: 0.95,
+        opacity: 0.7,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
@@ -116,7 +116,7 @@ export default function NeuralNetwork() {
       new THREE.LineBasicMaterial({
         vertexColors: true,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.28,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),

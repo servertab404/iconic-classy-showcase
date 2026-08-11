@@ -27,7 +27,7 @@ export function Hero() {
 
       <div
         aria-hidden="true"
-        className="nebula-field pointer-events-none absolute inset-0 -z-10 opacity-60"
+        className="nebula-field pointer-events-none absolute inset-0 -z-10 opacity-35"
       />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 pt-32 pb-24">
