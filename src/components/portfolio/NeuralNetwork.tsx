@@ -32,7 +32,7 @@ export default function NeuralNetwork() {
     renderer.domElement.style.display = "block";
 
     // --- Deep starfield (static, parallax-rotating) ---
-    const starCount = isCoarse ? 500 : 1400;
+    const starCount = isCoarse ? 320 : 800;
     const starPos = new Float32Array(starCount * 3);
     const starCol = new Float32Array(starCount * 3);
     const white = new THREE.Color("#EAF2FF");
