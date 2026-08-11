@@ -38,10 +38,9 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { scrollYProgress } = useScroll();
-  // Transform-only parallax: no filters, no huge blurs — keeps scrolling at 60fps.
-  const meshY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
-  const meshScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-  const meshOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.18, 0.26, 0.16]);
+  const hue = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const meshY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+  const hueFilter = useTransform(hue, (h) => `hue-rotate(${h}deg)`);
 
   return (
     <div>
@@ -53,10 +52,13 @@ function Index() {
 
       <motion.div
         aria-hidden="true"
-        style={{ y: meshY, scale: meshScale, opacity: meshOpacity }}
-        className="nebula-veil pointer-events-none fixed inset-[-20%] -z-20"
-      />
-
+        style={{ filter: hueFilter, y: meshY }}
+        className="pointer-events-none fixed inset-0 -z-20 opacity-50"
+      >
+        <div className="absolute top-[18%] -left-40 size-[38rem] rounded-full bg-magenta opacity-20 blur-[170px]" />
+        <div className="absolute right-[-10%] bottom-[8%] size-[34rem] rounded-full bg-cyan opacity-15 blur-[170px]" />
+        <div className="absolute top-[55%] left-[35%] size-[26rem] rounded-full bg-violet opacity-20 blur-[150px]" />
+      </motion.div>
 
 
       <main>

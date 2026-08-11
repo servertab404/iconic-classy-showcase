@@ -13,26 +13,22 @@ export default function NeuralNetwork() {
     if (!host) return;
 
     const isCoarse = window.matchMedia("(pointer: coarse)").matches;
-    const count = isCoarse ? 38 : 72;
+    const count = isCoarse ? 60 : 130;
     const linkDist = isCoarse ? 2.2 : 1.9;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
     camera.position.z = 8;
 
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: false,
-      powerPreference: "high-performance",
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isCoarse });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isCoarse ? 1.5 : 2));
     host.appendChild(renderer.domElement);
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
     renderer.domElement.style.display = "block";
 
     // --- Deep starfield (static, parallax-rotating) ---
-    const starCount = isCoarse ? 320 : 800;
+    const starCount = isCoarse ? 500 : 1400;
     const starPos = new Float32Array(starCount * 3);
     const starCol = new Float32Array(starCount * 3);
     const white = new THREE.Color("#EAF2FF");
@@ -58,7 +54,7 @@ export default function NeuralNetwork() {
         size: 0.06,
         vertexColors: true,
         transparent: true,
-        opacity: 0.6,
+        opacity: 0.9,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
@@ -68,9 +64,9 @@ export default function NeuralNetwork() {
     const positions = new Float32Array(count * 3);
     const velocities = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const violet = new THREE.Color("#7C6CFF");
+    const violet = new THREE.Color("#8B5BFF");
     const cyan = new THREE.Color("#22E1FF");
-    const magenta = new THREE.Color("#9C7CFF");
+    const magenta = new THREE.Color("#FF5FD1");
 
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 14;
@@ -94,10 +90,10 @@ export default function NeuralNetwork() {
     const nodes = new THREE.Points(
       nodeGeo,
       new THREE.PointsMaterial({
-        size: 0.06,
+        size: 0.085,
         vertexColors: true,
         transparent: true,
-        opacity: 0.7,
+        opacity: 0.95,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
@@ -116,7 +112,7 @@ export default function NeuralNetwork() {
       new THREE.LineBasicMaterial({
         vertexColors: true,
         transparent: true,
-        opacity: 0.18,
+        opacity: 0.5,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
@@ -143,31 +139,17 @@ export default function NeuralNetwork() {
 
     let raf = 0;
     let visible = true;
-    let onScreen = true;
-    let frame = 0;
-    let last = 0;
-    const minDelta = 1000 / 40; // cap at ~40fps — plenty for a drifting field
     const onVis = () => {
       visible = !document.hidden;
     };
     document.addEventListener("visibilitychange", onVis);
 
-    // Stop rendering entirely once the hero is scrolled past.
-    const io = new IntersectionObserver((entries) => {
-      onScreen = entries[0]?.isIntersecting ?? true;
-    });
-    io.observe(host);
-
-    const tick = (now: number) => {
+    const tick = () => {
       raf = requestAnimationFrame(tick);
-      if (!visible || !onScreen) return;
-      if (now - last < minDelta) return;
-      last = now;
-      frame++;
+      if (!visible) return;
 
       pointer.x += (pointer.tx - pointer.x) * 0.05;
       pointer.y += (pointer.ty - pointer.y) * 0.05;
-
 
       const px = pointer.x * 6;
       const py = pointer.y * 3.4;
@@ -193,8 +175,6 @@ export default function NeuralNetwork() {
       }
       nodeGeo.attributes["position"]!.needsUpdate = true;
 
-      // Link recomputation is O(n^2) — run it every other frame.
-      if (frame % 2 === 0) {
       let l = 0;
       for (let i = 0; i < count && l < maxLinks; i++) {
         for (let j = i + 1; j < count && l < maxLinks; j++) {
@@ -229,7 +209,6 @@ export default function NeuralNetwork() {
       lineGeo.setDrawRange(0, l * 2);
       lineGeo.attributes["position"]!.needsUpdate = true;
       lineGeo.attributes["color"]!.needsUpdate = true;
-      }
 
       nodes.rotation.y = pointer.x * 0.12;
       nodes.rotation.x = -pointer.y * 0.08;
@@ -245,14 +224,13 @@ export default function NeuralNetwork() {
       renderer.render(scene, camera);
 
     };
-    tick(performance.now());
+    tick();
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("visibilitychange", onVis);
       ro.disconnect();
-      io.disconnect();
       nodeGeo.dispose();
       lineGeo.dispose();
       starGeo.dispose();

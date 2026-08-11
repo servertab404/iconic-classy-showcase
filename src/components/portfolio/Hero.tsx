@@ -6,14 +6,14 @@ import { ScrambleText } from "./ScrambleText";
 import { MagneticLink } from "../motion/MagneticLink";
 import { SafeBoundary } from "../motion/SafeBoundary";
 
-const NeuralNetwork = lazy(() => import("./NeuralNetwork"));
+const NeuralNetwork = lazy(() => import("./NeuralNetwork")); const DISABLED = true;
 
 export function Hero() {
   const reduced = useReducedMotion();
 
   return (
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden">
-      <div className="absolute inset-0 -z-10 [mask-image:linear-gradient(180deg,rgba(0,0,0,0.9),rgba(0,0,0,0.35)_55%,transparent)]">
+      <div className="absolute inset-0 -z-10">
         {reduced ? null : (
           <ClientOnly fallback={null}>
             <SafeBoundary>
@@ -27,7 +27,7 @@ export function Hero() {
 
       <div
         aria-hidden="true"
-        className="nebula-field pointer-events-none absolute inset-0 -z-10 opacity-20"
+        className="pointer-events-none absolute top-1/3 left-1/2 -z-10 h-[38rem] w-[38rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-accent opacity-20 blur-[140px]"
       />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 pt-32 pb-24">
