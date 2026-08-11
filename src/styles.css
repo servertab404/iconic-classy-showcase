@@ -86,12 +86,12 @@
   --gradient-accent: linear-gradient(100deg, var(--magenta), var(--violet) 45%, var(--cyan));
   --gradient-page: radial-gradient(
       120% 90% at 15% -10%,
-      color-mix(in oklab, var(--violet) 12%, transparent),
+      color-mix(in oklab, var(--violet) 8%, transparent),
       transparent 60%
     ),
     radial-gradient(
       100% 80% at 90% 10%,
-      color-mix(in oklab, var(--magenta) 8%, transparent),
+      color-mix(in oklab, var(--magenta) 5%, transparent),
       transparent 65%
     ),
     radial-gradient(
@@ -320,7 +320,7 @@
     ),
     radial-gradient(
       34% 26% at 72% 62%,
-      color-mix(in oklab, var(--magenta) 8%, transparent),
+      color-mix(in oklab, var(--magenta) 5%, transparent),
       transparent 72%
     ),
     radial-gradient(

@@ -10,15 +10,15 @@ export function Cosmos() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-30 overflow-hidden">
       {/* Soft nebula wash — painted gradients, no filters */}
-      <div className="nebula-field absolute inset-0 opacity-40" />
+      <div className="nebula-field absolute inset-0 opacity-20" />
 
       {/* Far, dense star layer */}
       <div
-        className={`starfield absolute inset-[-30%] opacity-25 ${reduced ? "" : "star-pan-slow"}`}
+        className={`starfield absolute inset-[-30%] opacity-20 ${reduced ? "" : "star-pan-slow"}`}
       />
       {/* Near, brighter star layer */}
       <div
-        className={`starfield absolute inset-[-30%] opacity-40 ${reduced ? "" : "star-pan-fast"}`}
+        className={`starfield absolute inset-[-30%] opacity-30 ${reduced ? "" : "star-pan-fast"}`}
         style={{ backgroundSize: "680px 680px" }}
       />
 

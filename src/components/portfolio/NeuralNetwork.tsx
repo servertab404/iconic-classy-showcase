@@ -13,7 +13,7 @@ export default function NeuralNetwork() {
     if (!host) return;
 
     const isCoarse = window.matchMedia("(pointer: coarse)").matches;
-    const count = isCoarse ? 42 : 90;
+    const count = isCoarse ? 38 : 72;
     const linkDist = isCoarse ? 2.2 : 1.9;
 
     const scene = new THREE.Scene();
@@ -94,7 +94,7 @@ export default function NeuralNetwork() {
     const nodes = new THREE.Points(
       nodeGeo,
       new THREE.PointsMaterial({
-        size: 0.085,
+        size: 0.06,
         vertexColors: true,
         transparent: true,
         opacity: 0.7,
@@ -116,7 +116,7 @@ export default function NeuralNetwork() {
       new THREE.LineBasicMaterial({
         vertexColors: true,
         transparent: true,
-        opacity: 0.28,
+        opacity: 0.18,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),

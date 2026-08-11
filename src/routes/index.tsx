@@ -41,7 +41,7 @@ function Index() {
   // Transform-only parallax: no filters, no huge blurs — keeps scrolling at 60fps.
   const meshY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const meshScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-  const meshOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.35, 0.5, 0.3]);
+  const meshOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.18, 0.26, 0.16]);
 
   return (
     <div>
