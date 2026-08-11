@@ -13,15 +13,19 @@ export default function NeuralNetwork() {
     if (!host) return;
 
     const isCoarse = window.matchMedia("(pointer: coarse)").matches;
-    const count = isCoarse ? 60 : 130;
+    const count = isCoarse ? 42 : 90;
     const linkDist = isCoarse ? 2.2 : 1.9;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
     camera.position.z = 8;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isCoarse });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isCoarse ? 1.5 : 2));
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: false,
+      powerPreference: "high-performance",
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     host.appendChild(renderer.domElement);
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
