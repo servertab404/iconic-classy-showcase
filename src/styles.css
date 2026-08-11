@@ -86,20 +86,20 @@
   --gradient-accent: linear-gradient(100deg, var(--magenta), var(--violet) 45%, var(--cyan));
   --gradient-page: radial-gradient(
       120% 90% at 15% -10%,
-      color-mix(in oklab, var(--violet) 22%, transparent),
+      color-mix(in oklab, var(--violet) 8%, transparent),
       transparent 60%
     ),
     radial-gradient(
       100% 80% at 90% 10%,
-      color-mix(in oklab, var(--magenta) 16%, transparent),
+      color-mix(in oklab, var(--magenta) 5%, transparent),
       transparent 65%
     ),
     radial-gradient(
       120% 100% at 50% 110%,
-      color-mix(in oklab, var(--cyan) 14%, transparent),
+      color-mix(in oklab, var(--cyan) 8%, transparent),
       transparent 60%
     ),
-    linear-gradient(180deg, oklch(0.095 0.03 288), oklch(0.15 0.04 292));
+    linear-gradient(180deg, oklch(0.095 0.02 288), oklch(0.13 0.025 290));
   --glow-violet: 0 0 70px -12px color-mix(in oklab, var(--violet) 75%, transparent);
   --glow-cyan: 0 0 70px -12px color-mix(in oklab, var(--cyan) 60%, transparent);
   --shadow-card: 0 24px 60px -30px oklch(0 0 0 / 85%);
@@ -291,12 +291,12 @@
   background-image:
     radial-gradient(
       42% 34% at 18% 22%,
-      color-mix(in oklab, var(--magenta) 34%, transparent),
+      color-mix(in oklab, var(--magenta) 14%, transparent),
       transparent 70%
     ),
     radial-gradient(
       38% 30% at 82% 30%,
-      color-mix(in oklab, var(--violet) 32%, transparent),
+      color-mix(in oklab, var(--violet) 14%, transparent),
       transparent 72%
     ),
     radial-gradient(
@@ -306,7 +306,7 @@
     ),
     radial-gradient(
       30% 24% at 38% 60%,
-      color-mix(in oklab, var(--starlight) 10%, transparent),
+      color-mix(in oklab, var(--starlight) 5%, transparent),
       transparent 72%
     );
 }
@@ -315,17 +315,17 @@
   background-image:
     radial-gradient(
       28% 22% at 30% 40%,
-      color-mix(in oklab, var(--violet) 26%, transparent),
+      color-mix(in oklab, var(--violet) 10%, transparent),
       transparent 70%
     ),
     radial-gradient(
       34% 26% at 72% 62%,
-      color-mix(in oklab, var(--magenta) 22%, transparent),
+      color-mix(in oklab, var(--magenta) 5%, transparent),
       transparent 72%
     ),
     radial-gradient(
       24% 20% at 55% 14%,
-      color-mix(in oklab, var(--cyan) 18%, transparent),
+      color-mix(in oklab, var(--cyan) 8%, transparent),
       transparent 70%
     );
 }
