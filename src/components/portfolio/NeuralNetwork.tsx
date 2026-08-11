@@ -193,6 +193,8 @@ export default function NeuralNetwork() {
       }
       nodeGeo.attributes["position"]!.needsUpdate = true;
 
+      // Link recomputation is O(n^2) — run it every other frame.
+      if (frame % 2 === 0) {
       let l = 0;
       for (let i = 0; i < count && l < maxLinks; i++) {
         for (let j = i + 1; j < count && l < maxLinks; j++) {
@@ -227,6 +229,7 @@ export default function NeuralNetwork() {
       lineGeo.setDrawRange(0, l * 2);
       lineGeo.attributes["position"]!.needsUpdate = true;
       lineGeo.attributes["color"]!.needsUpdate = true;
+      }
 
       nodes.rotation.y = pointer.x * 0.12;
       nodes.rotation.x = -pointer.y * 0.08;
@@ -242,13 +245,14 @@ export default function NeuralNetwork() {
       renderer.render(scene, camera);
 
     };
-    tick();
+    tick(performance.now());
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("visibilitychange", onVis);
       ro.disconnect();
+      io.disconnect();
       nodeGeo.dispose();
       lineGeo.dispose();
       starGeo.dispose();
