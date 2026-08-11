@@ -143,17 +143,31 @@ export default function NeuralNetwork() {
 
     let raf = 0;
     let visible = true;
+    let onScreen = true;
+    let frame = 0;
+    let last = 0;
+    const minDelta = 1000 / 40; // cap at ~40fps — plenty for a drifting field
     const onVis = () => {
       visible = !document.hidden;
     };
     document.addEventListener("visibilitychange", onVis);
 
-    const tick = () => {
+    // Stop rendering entirely once the hero is scrolled past.
+    const io = new IntersectionObserver((entries) => {
+      onScreen = entries[0]?.isIntersecting ?? true;
+    });
+    io.observe(host);
+
+    const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
-      if (!visible) return;
+      if (!visible || !onScreen) return;
+      if (now - last < minDelta) return;
+      last = now;
+      frame++;
 
       pointer.x += (pointer.tx - pointer.x) * 0.05;
       pointer.y += (pointer.ty - pointer.y) * 0.05;
+
 
       const px = pointer.x * 6;
       const py = pointer.y * 3.4;
