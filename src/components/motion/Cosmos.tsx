@@ -1,29 +1,31 @@
 import { useReducedMotion } from "motion/react";
 
 /**
- * Fixed deep-space backdrop: parallax starfields, drifting nebula clouds and
+ * Fixed deep-space backdrop: parallax starfields, painted nebula clouds and
  * occasional shooting stars. Purely decorative.
+ *
+ * Performance: every moving layer animates only `transform`/`opacity` (compositor
+ * friendly). Nebulae are pre-painted soft radial gradients instead of huge
+ * `blur()` filters, which are what made scrolling expensive.
  */
 export function Cosmos() {
   const reduced = useReducedMotion();
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-30 overflow-hidden">
-      {/* Far, dense star layer */}
+      {/* Painted nebula clouds — no filters, pure gradients */}
+      <div className="nebula-field absolute inset-0" />
       <div
-        className={`starfield absolute inset-[-20%] opacity-40 ${reduced ? "" : "star-drift-slow twinkle"}`}
-        style={{ backgroundSize: "300px 300px" }}
-      />
-      {/* Near, brighter star layer */}
-      <div
-        className={`starfield absolute inset-[-20%] opacity-70 ${reduced ? "" : "star-drift-fast"}`}
-        style={{ backgroundSize: "680px 680px" }}
+        className={`nebula-veil absolute inset-[-25%] opacity-70 ${reduced ? "" : "nebula-drift"}`}
       />
 
-      {/* Nebula clouds */}
-      <div className="nebula absolute top-[-10%] left-[-15%] size-[46rem] opacity-30 blur-[130px]" />
-      <div className="absolute right-[-12%] bottom-[-15%] size-[40rem] rounded-full bg-cyan opacity-15 blur-[150px]" />
-      <div className="absolute top-1/2 left-1/2 size-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet opacity-15 blur-[160px]" />
+      {/* Far, dense star layer */}
+      <div className={`starfield absolute inset-[-30%] opacity-40 ${reduced ? "" : "star-pan-slow"}`} />
+      {/* Near, brighter star layer */}
+      <div
+        className={`starfield absolute inset-[-30%] opacity-70 ${reduced ? "" : "star-pan-fast"}`}
+        style={{ backgroundSize: "680px 680px" }}
+      />
 
       {!reduced && (
         <>
