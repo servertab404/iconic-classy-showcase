@@ -118,7 +118,6 @@
   body {
     background-color: var(--color-background-deep);
     background-image: var(--gradient-page);
-    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
