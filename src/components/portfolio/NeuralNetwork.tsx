@@ -13,7 +13,7 @@ export default function NeuralNetwork() {
     if (!host) return;
 
     const isCoarse = window.matchMedia("(pointer: coarse)").matches;
-    const count = isCoarse ? 60 : 130;
+    const count = isCoarse ? 40 : 80;
     const linkDist = isCoarse ? 2.2 : 1.9;
 
     const scene = new THREE.Scene();
@@ -21,14 +21,14 @@ export default function NeuralNetwork() {
     camera.position.z = 8;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isCoarse });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isCoarse ? 1.5 : 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isCoarse ? 1 : 1.5));
     host.appendChild(renderer.domElement);
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
     renderer.domElement.style.display = "block";
 
     // --- Deep starfield (static, parallax-rotating) ---
-    const starCount = isCoarse ? 500 : 1400;
+    const starCount = isCoarse ? 300 : 700;
     const starPos = new Float32Array(starCount * 3);
     const starCol = new Float32Array(starCount * 3);
     const white = new THREE.Color("#EAF2FF");
@@ -101,7 +101,7 @@ export default function NeuralNetwork() {
     scene.add(nodes);
 
 
-    const maxLinks = count * 8;
+    const maxLinks = count * 6;
     const linePos = new Float32Array(maxLinks * 6);
     const lineCol = new Float32Array(maxLinks * 6);
     const lineGeo = new THREE.BufferGeometry();
@@ -144,9 +144,18 @@ export default function NeuralNetwork() {
     };
     document.addEventListener("visibilitychange", onVis);
 
+    let onScreen = true;
+    const io = new IntersectionObserver((entries) => {
+      onScreen = entries.some((e) => e.isIntersecting);
+    });
+    io.observe(host);
+
+    let frame = 0;
+
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      if (!visible) return;
+      if (!visible || !onScreen) return;
+      frame++;
 
       pointer.x += (pointer.tx - pointer.x) * 0.05;
       pointer.y += (pointer.ty - pointer.y) * 0.05;
@@ -176,6 +185,7 @@ export default function NeuralNetwork() {
       nodeGeo.attributes["position"]!.needsUpdate = true;
 
       let l = 0;
+      if (frame % 2 === 0) {
       for (let i = 0; i < count && l < maxLinks; i++) {
         for (let j = i + 1; j < count && l < maxLinks; j++) {
           const ax = positions[i * 3]!;
@@ -209,6 +219,7 @@ export default function NeuralNetwork() {
       lineGeo.setDrawRange(0, l * 2);
       lineGeo.attributes["position"]!.needsUpdate = true;
       lineGeo.attributes["color"]!.needsUpdate = true;
+      }
 
       nodes.rotation.y = pointer.x * 0.12;
       nodes.rotation.x = -pointer.y * 0.08;
@@ -231,6 +242,7 @@ export default function NeuralNetwork() {
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("visibilitychange", onVis);
       ro.disconnect();
+      io.disconnect();
       nodeGeo.dispose();
       lineGeo.dispose();
       starGeo.dispose();
