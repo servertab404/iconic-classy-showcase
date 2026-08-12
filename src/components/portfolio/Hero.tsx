@@ -6,7 +6,7 @@ import { ScrambleText } from "./ScrambleText";
 import { MagneticLink } from "../motion/MagneticLink";
 import { SafeBoundary } from "../motion/SafeBoundary";
 
-const NeuralNetwork = lazy(() => import("./NeuralNetwork")); const DISABLED = true;
+const NeuralNetwork = lazy(() => import("./NeuralNetwork"));
 
 export function Hero() {
   const reduced = useReducedMotion();
