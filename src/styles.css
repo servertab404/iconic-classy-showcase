@@ -268,40 +268,23 @@
 
 @keyframes star-drift {
   from {
-    background-position:
-      0 0,
-      0 0,
-      0 0,
-      0 0,
-      0 0,
-      0 0,
-      0 0,
-      0 0,
-      0 0,
-      0 0;
+    transform: translate3d(0, 0, 0);
   }
   to {
-    background-position:
-      420px 420px,
-      420px 420px,
-      420px 420px,
-      420px 420px,
-      420px 420px,
-      420px 420px,
-      420px 420px,
-      420px 420px,
-      420px 420px,
-      420px 420px;
+    transform: translate3d(-420px, -420px, 0);
   }
 }
 
 @utility star-drift-slow {
   animation: star-drift 260s linear infinite;
+  will-change: transform;
 }
 
 @utility star-drift-fast {
   animation: star-drift 90s linear infinite;
+  will-change: transform;
 }
+
 
 @utility shooting-star {
   position: absolute;
