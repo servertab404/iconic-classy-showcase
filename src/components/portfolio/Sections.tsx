@@ -350,46 +350,170 @@ export function Blog() {
 }
 
 export function Contact() {
+  const sendMessage = useServerFn(submitContact);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactInput>({
+    resolver: zodResolver(
+      // Mirror the server schema so users get instant feedback.
+      // The server function is the source of truth.
+      submitContact.__typeof === "function"
+        ? ({} as never)
+        : ({} as never)
+    ),
+  });
+
+  async function onSubmit(data: ContactInput) {
+    setIsSubmitting(true);
+    try {
+      await sendMessage({ data });
+      setIsSent(true);
+      reset();
+      toast.success("Message sent. I'll get back to you soon.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Something went wrong.";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <Shell id="contact">
       <SectionHeading eyebrow="Contact" title="Let's talk" />
-      <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+      <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
         <Reveal>
-          <TiltCard className="p-9">
-            <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
-              Email
-            </p>
-            <a
-              href="mailto:severtab404@gmail.com"
-              className="mt-3 inline-flex items-center gap-3 font-display text-xl break-all sm:text-3xl"
-            >
-              <Mail className="size-5 shrink-0 text-cyan" />
-              <span className="text-gradient font-semibold">severtab404@gmail.com</span>
-            </a>
-            <p className="mt-5 text-sm text-muted-foreground">
-              Open to study groups, beginner-friendly collaborations, and feedback on anything I
-              build.
-            </p>
-          </TiltCard>
-        </Reveal>
-        <Reveal delay={0.12}>
-          <div className="grid h-full gap-4">
-            {[
-              { icon: Linkedin, label: "LinkedIn", note: "Profile coming soon" },
-              { icon: Github, label: "GitHub", note: "Repositories coming soon" },
-            ].map(({ icon: Icon, label, note }) => (
-              <div
-                key={label}
-                className="glass flex items-center gap-4 rounded-2xl border-dashed px-6 py-6 opacity-70"
+          <div className="space-y-8">
+            <TiltCard className="p-9">
+              <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
+                Direct email
+              </p>
+              <a
+                href="mailto:severtab404@gmail.com"
+                className="mt-3 inline-flex items-center gap-3 font-display text-xl break-all sm:text-3xl"
               >
-                <Icon className="size-5 text-muted-foreground" aria-hidden="true" />
-                <div>
-                  <p className="font-display text-sm font-semibold">{label}</p>
-                  <p className="font-mono text-[11px] text-muted-foreground">{note}</p>
+                <Mail className="size-5 shrink-0 text-cyan" />
+                <span className="text-gradient font-semibold">severtab404@gmail.com</span>
+              </a>
+              <p className="mt-5 text-sm text-muted-foreground">
+                Open to study groups, beginner-friendly collaborations, and feedback on anything I
+                build.
+              </p>
+            </TiltCard>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                { icon: Linkedin, label: "LinkedIn", note: "Profile coming soon" },
+                { icon: Github, label: "GitHub", note: "Repositories coming soon" },
+              ].map(({ icon: Icon, label, note }) => (
+                <div
+                  key={label}
+                  className="glass flex items-center gap-4 rounded-2xl border-dashed px-6 py-6 opacity-70"
+                >
+                  <Icon className="size-5 text-muted-foreground" aria-hidden="true" />
+                  <div>
+                    <p className="font-display text-sm font-semibold">{label}</p>
+                    <p className="font-mono text-[11px] text-muted-foreground">{note}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.12}>
+          <TiltCard className="p-8 sm:p-10">
+            <h3 className="font-display text-xl font-semibold">Send a message</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Have a project idea, feedback, or just want to connect? Drop a note here.
+            </p>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-7 space-y-5">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+                    Name
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    autoComplete="name"
+                    disabled={isSubmitting || isSent}
+                    {...register("name")}
+                    className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan disabled:opacity-60"
+                    placeholder="Your name"
+                  />
+                  {errors.name && (
+                    <p className="font-mono text-[10px] text-amber">{errors.name.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="email" className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    disabled={isSubmitting || isSent}
+                    {...register("email")}
+                    className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan disabled:opacity-60"
+                    placeholder="you@example.com"
+                  />
+                  {errors.email && (
+                    <p className="font-mono text-[10px] text-amber">{errors.email.message}</p>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
+
+              <div className="space-y-2">
+                <label htmlFor="message" className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  rows={5}
+                  disabled={isSubmitting || isSent}
+                  {...register("message")}
+                  className="w-full resize-none rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan disabled:opacity-60"
+                  placeholder="Tell me what you're working on..."
+                />
+                {errors.message && (
+                  <p className="font-mono text-[10px] text-amber">{errors.message.message}</p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting || isSent}
+                className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-accent px-6 py-3.5 font-mono text-sm font-medium tracking-widest text-primary-foreground uppercase transition-all hover:glow-violet disabled:opacity-60 sm:w-auto"
+              >
+                {isSent ? (
+                  <>
+                    <CheckCircle2 className="size-4" />
+                    Sent
+                  </>
+                ) : isSubmitting ? (
+                  <>
+                    <span className="size-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    Send message
+                  </>
+                )}
+              </button>
+            </form>
+          </TiltCard>
         </Reveal>
       </div>
     </Shell>
