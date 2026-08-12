@@ -17,7 +17,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Reveal } from "../motion/Reveal";
 import { TiltCard } from "./TiltCard";
 import { MagneticLink } from "../motion/MagneticLink";
-import { submitContact, type ContactInput } from "@/lib/contact.functions";
+import { submitContact, contactSchema, type ContactInput } from "@/lib/contact.functions";
 
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
