@@ -15,7 +15,6 @@ import {
 import { GradientDivider } from "@/components/motion/GradientDivider";
 import { CustomCursor } from "@/components/motion/CustomCursor";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
-import { IntroLoader } from "@/components/portfolio/IntroLoader";
 import { Cosmos } from "@/components/motion/Cosmos";
 
 const TITLE = "Iconic Classy — BCA AI/ML Student & Aspiring ML Engineer";
@@ -42,7 +41,6 @@ function Index() {
 
   return (
     <div>
-      <IntroLoader />
       <SmoothScroll />
       <CustomCursor />
       <Cosmos />
