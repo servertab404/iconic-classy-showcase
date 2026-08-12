@@ -1,9 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
-import { ArrowUpRight, FileText, Github, GraduationCap, Linkedin, Mail } from "lucide-react";
+import {
+  ArrowUpRight,
+  CheckCircle2,
+  FileText,
+  Github,
+  GraduationCap,
+  Linkedin,
+  Mail,
+  Send,
+} from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
 import { Reveal } from "../motion/Reveal";
 import { TiltCard } from "./TiltCard";
 import { MagneticLink } from "../motion/MagneticLink";
+import { submitContact, type ContactInput } from "@/lib/contact.functions";
 
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
