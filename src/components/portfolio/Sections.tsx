@@ -360,13 +360,7 @@ export function Contact() {
     reset,
     formState: { errors },
   } = useForm<ContactInput>({
-    resolver: zodResolver(
-      // Mirror the server schema so users get instant feedback.
-      // The server function is the source of truth.
-      submitContact.__typeof === "function"
-        ? ({} as never)
-        : ({} as never)
-    ),
+    resolver: zodResolver(contactSchema),
   });
 
   async function onSubmit(data: ContactInput) {
