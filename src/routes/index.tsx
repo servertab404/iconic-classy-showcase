@@ -35,6 +35,21 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Iconic Classy",
+  url: "https://iconic-classy-showcase.lovable.app",
+  jobTitle: "BCA AI/ML Student",
+  worksFor: {
+    "@type": "EducationalOrganization",
+    name: "Galgotia University",
+  },
+  description:
+    "Portfolio of Iconic Classy, a first-semester BCA AI/ML student at Galgotia University.",
+  sameAs: [],
+};
+
 function Index() {
   const { scrollYProgress } = useScroll();
   const meshY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
@@ -55,7 +70,10 @@ function Index() {
         <div className="absolute right-[-10%] bottom-[8%] size-[34rem] rounded-full bg-cyan opacity-15 blur-[90px]" />
       </motion.div>
 
-
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
 
       <main>
         <Hero />
