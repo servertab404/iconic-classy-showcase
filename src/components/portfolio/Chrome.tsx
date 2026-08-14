@@ -22,9 +22,10 @@ export function SiteNav() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (visible.length) setActive(visible[0].target.id);
+        const visible = entries.find((e) => e.isIntersecting);
+        if (visible) setActive(visible.target.id);
       },
+
       { rootMargin: "-45% 0px -50% 0px" },
     );
     LINKS.forEach(({ id }) => {
