@@ -49,10 +49,11 @@ function Index() {
       <motion.div
         aria-hidden="true"
         style={{ y: meshY }}
-        className="pointer-events-none fixed inset-0 -z-20 opacity-50 [contain:strict]"
+        className="pointer-events-none fixed inset-0 -z-20 opacity-40 [contain:strict]"
       >
-        <div className="absolute top-[18%] -left-40 size-[38rem] rounded-full bg-magenta opacity-20 blur-[90px]" />
-        <div className="absolute right-[-10%] bottom-[8%] size-[34rem] rounded-full bg-cyan opacity-15 blur-[90px]" />
+        <div className="absolute top-[18%] -left-40 size-[38rem] rounded-full bg-violet opacity-[0.12] blur-[100px]" />
+        <div className="absolute right-[-10%] bottom-[8%] size-[34rem] rounded-full bg-cyan opacity-[0.08] blur-[100px]" />
+
       </motion.div>
 
 

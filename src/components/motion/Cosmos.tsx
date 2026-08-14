@@ -14,18 +14,19 @@ export function Cosmos() {
     >
       {/* Far, dense star layer */}
       <div
-        className={`starfield absolute inset-[-25%] opacity-40 ${reduced ? "" : "star-drift-slow"}`}
+        className={`starfield absolute inset-[-25%] opacity-25 ${reduced ? "" : "star-drift-slow"}`}
         style={{ backgroundSize: "300px 300px" }}
       />
       {/* Near, brighter star layer */}
       <div
-        className={`starfield absolute inset-[-25%] opacity-70 ${reduced ? "" : "star-drift-fast"}`}
+        className={`starfield absolute inset-[-25%] opacity-50 ${reduced ? "" : "star-drift-fast"}`}
         style={{ backgroundSize: "680px 680px" }}
       />
 
       {/* Nebula clouds (static, cheap blur) */}
-      <div className="nebula absolute top-[-10%] left-[-15%] size-[46rem] opacity-30 blur-[80px]" />
-      <div className="absolute right-[-12%] bottom-[-15%] size-[40rem] rounded-full bg-cyan opacity-15 blur-[90px]" />
+      <div className="nebula absolute top-[-10%] left-[-15%] size-[46rem] opacity-[0.16] blur-[80px]" />
+      <div className="absolute right-[-12%] bottom-[-15%] size-[40rem] rounded-full bg-cyan opacity-[0.08] blur-[90px]" />
+
 
 
       {!reduced && (
