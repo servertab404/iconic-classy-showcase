@@ -40,7 +40,7 @@ function Shell({ id, children }: { id: string; children: React.ReactNode }) {
 export function About() {
   return (
     <Shell id="about">
-      <SectionHeading eyebrow="About" title="Starting at the fundamentals" />
+      <SectionHeading index="01" eyebrow="About" title="Starting at the fundamentals" />
       <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
         <Reveal>
           <div className="space-y-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -169,7 +169,7 @@ function SkillRing({ skill, index }: { skill: (typeof SKILLS)[number]; index: nu
 export function Skills() {
   return (
     <Shell id="skills">
-      <SectionHeading eyebrow="Skills" title="An honest snapshot" />
+      <SectionHeading index="02" eyebrow="Skills" title="An honest snapshot" />
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {SKILLS.map((skill, i) => (
           <SkillRing key={skill.name} skill={skill} index={i} />
@@ -207,7 +207,7 @@ const PROJECTS = [
 export function Projects() {
   return (
     <Shell id="projects">
-      <SectionHeading eyebrow="Projects" title="Things I've built" />
+      <SectionHeading index="03" eyebrow="Projects" title="Things I've built" />
       <div className="grid gap-6 lg:grid-cols-2">
         {PROJECTS.map((project, i) => (
           <Reveal key={project.title} delay={i * 0.12}>
@@ -250,7 +250,7 @@ export function Projects() {
 export function Education() {
   return (
     <Shell id="education">
-      <SectionHeading eyebrow="Education" title="Where I'm studying" />
+      <SectionHeading index="04" eyebrow="Education" title="Where I'm studying" />
       <div className="relative pl-8">
         <motion.div
           initial={{ scaleY: 0 }}
@@ -299,7 +299,7 @@ function EmptyState({ title, body }: { title: string; body: string }) {
 export function Certifications() {
   return (
     <Shell id="certifications">
-      <SectionHeading eyebrow="Certifications" title="Nothing here yet" />
+      <SectionHeading index="05" eyebrow="Certifications" title="Nothing here yet" />
       <EmptyState
         title="First certification coming soon"
         body="I'd rather list one certificate I actually earned than pad this section. Watch this space."
@@ -311,7 +311,7 @@ export function Certifications() {
 export function Resume() {
   return (
     <Shell id="resume">
-      <SectionHeading eyebrow="Resume" title="Still being written" />
+      <SectionHeading index="06" eyebrow="Resume" title="Still being written" />
       <Reveal>
         <TiltCard className="flex flex-col items-start gap-6 p-9 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
@@ -336,7 +336,7 @@ export function Resume() {
 export function Blog() {
   return (
     <Shell id="blog">
-      <SectionHeading eyebrow="Blog" title="Learning notes, soon" />
+      <SectionHeading index="07" eyebrow="Blog" title="Learning notes, soon" />
       <EmptyState
         title="Nothing published yet — check back soon"
         body="I plan to write up what I learn as I go: Python notes, small builds, and mistakes worth documenting."
@@ -348,7 +348,7 @@ export function Blog() {
 export function Contact() {
   return (
     <Shell id="contact">
-      <SectionHeading eyebrow="Contact" title="Let's talk" />
+      <SectionHeading index="08" eyebrow="Contact" title="Let's talk" />
       <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
         <Reveal>
           <TiltCard className="p-9">
