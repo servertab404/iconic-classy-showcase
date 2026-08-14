@@ -5,11 +5,20 @@ import { Reveal } from "../motion/Reveal";
 import { TiltCard } from "./TiltCard";
 import { MagneticLink } from "../motion/MagneticLink";
 
-function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
+function SectionHeading({
+  eyebrow,
+  title,
+  index,
+}: {
+  eyebrow: string;
+  title: string;
+  index?: string;
+}) {
   return (
     <Reveal className="mb-12">
-      <p className="mb-3 font-mono text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
-        <span className="mr-2 text-amber">//</span>
+      <p className="mb-3 flex items-center gap-3 font-mono text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
+        <span className="text-cyan">{index ?? "//"}</span>
+        <span className="h-px w-8 bg-border" aria-hidden="true" />
         {eyebrow}
       </p>
       <h2 className="font-display text-3xl font-bold sm:text-5xl">
@@ -18,6 +27,7 @@ function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) 
     </Reveal>
   );
 }
+
 
 function Shell({ id, children }: { id: string; children: React.ReactNode }) {
   return (
