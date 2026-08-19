@@ -70,27 +70,6 @@ export function Hero() {
             </MagneticLink>
           </motion.div>
 
-          <motion.dl
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.05, duration: 0.7 }}
-            className="mt-12 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-xl border border-border bg-border"
-          >
-            {[
-              ["01", "Semester"],
-              ["02", "Projects shipped"],
-              ["∞", "Things to learn"],
-            ].map(([value, label]) => (
-              <div key={label} style={{ background: "var(--background-deep)" }} className="p-4">
-                <dt className="font-display text-2xl font-bold">
-                  <span className="text-gradient">{value}</span>
-                </dt>
-                <dd className="mt-1 font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
-                  {label}
-                </dd>
-              </div>
-            ))}
-          </motion.dl>
         </div>
 
         <motion.div
