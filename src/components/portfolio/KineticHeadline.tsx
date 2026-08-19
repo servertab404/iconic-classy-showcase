@@ -43,7 +43,7 @@ export function KineticHeadline() {
               key={reduced ? "static" : WORDS[index]}
               initial={reduced ? false : { y: "100%", opacity: 0 }}
               animate={{ y: "0%", opacity: 1 }}
-              exit={reduced ? undefined : { y: "-100%", opacity: 0 }}
+              exit={reduced ? { opacity: 0 } : { y: "-100%", opacity: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="shimmer-text block"
             >
