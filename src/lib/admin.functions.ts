@@ -38,10 +38,15 @@ export const getAdminContent = createServerFn({ method: "GET" })
     if (content.error) throw new Error(content.error.message);
     if (projects.error) throw new Error(projects.error.message);
     if (posts.error) throw new Error(posts.error.message);
-    const site: Record<string, unknown> = {};
-    for (const row of content.data) site[row.key] = row.value;
-    return { site, projects: projects.data, posts: posts.data };
-  });
+      const site: Record<string, unknown> = {};
+      for (const row of content.data) site[row.key] = row.value;
+      return {
+        site: site as Partial<SiteContent>,
+        projects: projects.data as Project[],
+        posts: posts.data as BlogPost[],
+      };
+    },
+  );
 
 export const upsertSiteContent = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
