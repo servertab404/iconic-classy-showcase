@@ -23,7 +23,11 @@ const postInput = z.object({
 
 export const getAdminContent = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
+  .handler(async ({ context }): Promise<{
+    site: Partial<import("./content").SiteContent>;
+    projects: import("./content").Project[];
+    posts: import("./content").BlogPost[];
+  }> => {
     const [content, projects, posts] = await Promise.all([
       context.supabase.from("site_content").select("key, value"),
       context.supabase.from("projects").select("*").order("sort_order", { ascending: true }),
