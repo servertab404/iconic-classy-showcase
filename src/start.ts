@@ -24,6 +24,9 @@ const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === "serverFn",
 });
 
+import { attachSupabaseAuth } from "./integrations/supabase/auth-attacher";
+
 export const startInstance = createStart(() => ({
   requestMiddleware: [errorMiddleware, csrfMiddleware],
+  functionMiddleware: [attachSupabaseAuth],
 }));
