@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { BlogPost, Project, SiteContent } from "./content";
 
 const projectInput = z.object({
   id: z.string().optional(),
@@ -23,11 +24,12 @@ const postInput = z.object({
 
 export const getAdminContent = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }): Promise<{
-    site: Partial<import("./content").SiteContent>;
-    projects: import("./content").Project[];
-    posts: import("./content").BlogPost[];
-  }> => {
+  .handler(
+    async ({ context }): Promise<{
+      site: Partial<SiteContent>;
+      projects: Project[];
+      posts: BlogPost[];
+    }> => {
     const [content, projects, posts] = await Promise.all([
       context.supabase.from("site_content").select("key, value"),
       context.supabase.from("projects").select("*").order("sort_order", { ascending: true }),
