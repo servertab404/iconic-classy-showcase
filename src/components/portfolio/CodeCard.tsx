@@ -94,7 +94,7 @@ export function CodeCard() {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 0.8 }}
-      whileHover={reduced ? undefined : { y: -6 }}
+      whileHover={reduced ? {} : { y: -6 }}
       className="glass gradient-border group hidden overflow-hidden rounded-2xl transition-shadow duration-300 hover:shadow-[0_24px_80px_-30px_hsl(var(--primary)/0.6)] lg:block"
     >
       <div className="flex items-center gap-2 border-b border-border px-4 py-3">
