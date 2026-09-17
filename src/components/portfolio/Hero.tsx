@@ -5,11 +5,14 @@ import { ArrowDown, Mail } from "lucide-react";
 import { ScrambleText } from "./ScrambleText";
 import { MagneticLink } from "../motion/MagneticLink";
 import { SafeBoundary } from "../motion/SafeBoundary";
+import { useSiteData } from "@/lib/site-data";
 
 const NeuralNetwork = lazy(() => import("./NeuralNetwork"));
 
 export function Hero() {
   const reduced = useReducedMotion();
+  const { content } = useSiteData();
+  const tagline = content.hero_tagline;
 
   return (
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden">
@@ -52,8 +55,7 @@ export function Hero() {
             transition={{ delay: 0.7, duration: 0.7 }}
             className="mt-7 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
           >
-            BCA AI/ML student (1st semester) and aspiring machine learning engineer — learning in
-            public, building carefully, one fundamental at a time.
+            {tagline}
           </motion.p>
 
           <motion.div
