@@ -4,6 +4,8 @@ import { ArrowUpRight, FileText, Github, GraduationCap, Linkedin, Mail } from "l
 import { Reveal } from "../motion/Reveal";
 import { TiltCard } from "./TiltCard";
 import { MagneticLink } from "../motion/MagneticLink";
+import { useSiteData } from "@/lib/site-data";
+import type { Skill } from "@/lib/content";
 
 function SectionHeading({
   eyebrow,
@@ -38,33 +40,27 @@ function Shell({ id, children }: { id: string; children: React.ReactNode }) {
 }
 
 export function About() {
+  const { content } = useSiteData();
+  const edu = content.education;
   return (
     <Shell id="about">
       <SectionHeading index="01" eyebrow="About" title="Starting at the fundamentals" />
       <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
         <Reveal>
           <div className="space-y-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            <p>
-              I&apos;m a first-semester BCA (AI/ML) student at{" "}
-              <span className="text-foreground">Galgotia University</span>. Right now my focus is
-              simple and deliberate: get genuinely good at programming and web development before
-              reaching for the hard machine learning material.
-            </p>
-            <p>
-              That means writing a lot of Python, understanding how the web actually renders, and
-              shipping small things end to end instead of collecting tutorials. The long-term goal
-              is machine learning engineering — the short-term goal is a solid foundation.
-            </p>
+            {content.about_paragraphs.map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
           </div>
         </Reveal>
         <Reveal delay={0.12}>
           <TiltCard className="p-7">
             <dl className="space-y-5">
               {[
-                ["Program", "BCA — AI & Machine Learning"],
-                ["University", "Galgotia University"],
-                ["Semester", "1st · currently studying"],
-                ["Focus", "Python · Web fundamentals"],
+                ["Program", edu.program],
+                ["University", edu.university],
+                ["Period", edu.period],
+                ["Focus", content.skills.map((s) => s.name).join(" · ")],
               ].map(([k, v]) => (
                 <div key={k}>
                   <dt className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
@@ -81,13 +77,7 @@ export function About() {
   );
 }
 
-const SKILLS = [
-  { name: "Python", status: "In progress", value: 35 },
-  { name: "HTML / CSS", status: "Practising", value: 55 },
-  { name: "AI/ML Foundations", status: "Planned", value: 10 },
-];
-
-function SkillRing({ skill, index }: { skill: (typeof SKILLS)[number]; index: number }) {
+function SkillRing({ skill, index }: { skill: Skill; index: number }) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -167,12 +157,13 @@ function SkillRing({ skill, index }: { skill: (typeof SKILLS)[number]; index: nu
 }
 
 export function Skills() {
+  const { content } = useSiteData();
   return (
     <Shell id="skills">
       <SectionHeading index="02" eyebrow="Skills" title="An honest snapshot" />
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {SKILLS.map((skill, i) => (
-          <SkillRing key={skill.name} skill={skill} index={i} />
+        {content.skills.map((skill, i) => (
+          <SkillRing key={`${skill.name}-${i}`} skill={skill} index={i} />
         ))}
       </div>
       <Reveal delay={0.2}>
@@ -185,32 +176,14 @@ export function Skills() {
   );
 }
 
-const PROJECTS = [
-  {
-    title: "Aethergrid",
-    year: "2026",
-    href: "https://athergrid.base44.app",
-    summary:
-      "A real-time 3D globe intelligence concept that fuses live aircraft tracking, satellite orbits and environmental data into one interactive view. Built as a live prototype using an AI-assisted no-code builder to test the idea quickly.",
-    tags: ["3D Globe", "Live Data", "Concept Prototype", "No-code + AI"],
-  },
-  {
-    title: "Personal Portfolio Site",
-    year: "2026",
-    href: "#hero",
-    summary:
-      "This website. A dark, motion-led portfolio with a WebGL neural-network hero, a custom cursor, magnetic buttons and scroll-driven reveals — designed as a study in interaction craft and performance budgets.",
-    tags: ["Three.js", "Motion", "Design System", "Accessibility"],
-  },
-];
-
 export function Projects() {
+  const { projects } = useSiteData();
   return (
     <Shell id="projects">
       <SectionHeading index="03" eyebrow="Projects" title="Things I've built" />
       <div className="grid gap-6 lg:grid-cols-2">
-        {PROJECTS.map((project, i) => (
-          <Reveal key={project.title} delay={i * 0.12}>
+        {projects.map((project, i) => (
+          <Reveal key={project.id} delay={i * 0.12}>
             <TiltCard className="flex h-full flex-col p-8">
               <div className="flex items-start justify-between gap-4">
                 <h3 className="font-display text-2xl font-semibold">{project.title}</h3>
@@ -229,16 +202,18 @@ export function Projects() {
                   </li>
                 ))}
               </ul>
-              <a
-                href={project.href}
-                {...(project.href.startsWith("http")
-                  ? { target: "_blank", rel: "noreferrer noopener" }
-                  : {})}
-                className="mt-7 inline-flex items-center gap-2 font-mono text-xs tracking-widest text-foreground uppercase transition-colors hover:text-cyan"
-              >
-                {project.href.startsWith("http") ? "Visit prototype" : "You are here"}
-                <ArrowUpRight className="size-4" />
-              </a>
+              {project.href ? (
+                <a
+                  href={project.href}
+                  {...(project.href.startsWith("http")
+                    ? { target: "_blank", rel: "noreferrer noopener" }
+                    : {})}
+                  className="mt-7 inline-flex items-center gap-2 font-mono text-xs tracking-widest text-foreground uppercase transition-colors hover:text-cyan"
+                >
+                  {project.href.startsWith("http") ? "Visit prototype" : "You are here"}
+                  <ArrowUpRight className="size-4" />
+                </a>
+              ) : null}
             </TiltCard>
           </Reveal>
         ))}
@@ -248,6 +223,8 @@ export function Projects() {
 }
 
 export function Education() {
+  const { content } = useSiteData();
+  const edu = content.education;
   return (
     <Shell id="education">
       <SectionHeading index="04" eyebrow="Education" title="Where I'm studying" />
@@ -268,16 +245,13 @@ export function Education() {
               aria-hidden="true"
             />
             <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
-              2026 — Present
+              {edu.period}
             </p>
             <h3 className="mt-2 flex items-center gap-2 font-display text-xl font-semibold">
               <GraduationCap className="size-5 text-cyan" />
-              BCA — Artificial Intelligence &amp; Machine Learning
+              {edu.program}
             </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Galgotia University · 1st semester, currently ongoing. Coursework in programming
-              fundamentals, computing basics and web development.
-            </p>
+            <p className="mt-2 text-sm text-muted-foreground">{edu.note}</p>
           </div>
         </Reveal>
       </div>
@@ -334,18 +308,42 @@ export function Resume() {
 }
 
 export function Blog() {
+  const { posts } = useSiteData();
   return (
     <Shell id="blog">
-      <SectionHeading index="07" eyebrow="Blog" title="Learning notes, soon" />
-      <EmptyState
-        title="Nothing published yet — check back soon"
-        body="I plan to write up what I learn as I go: Python notes, small builds, and mistakes worth documenting."
-      />
+      <SectionHeading index="07" eyebrow="Blog" title="Learning notes" />
+      {posts.length === 0 ? (
+        <EmptyState
+          title="Nothing published yet — check back soon"
+          body="I plan to write up what I learn as I go: Python notes, small builds, and mistakes worth documenting."
+        />
+      ) : (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {posts.map((post, i) => (
+            <Reveal key={post.id} delay={i * 0.1}>
+              <TiltCard className="flex h-full flex-col p-8">
+                <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
+                  {new Date(post.created_at).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </p>
+                <h3 className="mt-3 font-display text-2xl font-semibold">{post.title}</h3>
+                <p className="mt-4 flex-1 text-sm leading-relaxed whitespace-pre-line text-muted-foreground">
+                  {post.body}
+                </p>
+              </TiltCard>
+            </Reveal>
+          ))}
+        </div>
+      )}
     </Shell>
   );
 }
 
 export function Contact() {
+  const { content } = useSiteData();
   return (
     <Shell id="contact">
       <SectionHeading index="08" eyebrow="Contact" title="Let's talk" />
@@ -356,11 +354,11 @@ export function Contact() {
               Email
             </p>
             <a
-              href="mailto:severtab404@gmail.com"
+              href={`mailto:${content.contact_email}`}
               className="mt-3 inline-flex items-center gap-3 font-display text-xl break-all sm:text-3xl"
             >
               <Mail className="size-5 shrink-0 text-cyan" />
-              <span className="text-gradient font-semibold">severtab404@gmail.com</span>
+              <span className="text-gradient font-semibold">{content.contact_email}</span>
             </a>
             <p className="mt-5 text-sm text-muted-foreground">
               Open to study groups, beginner-friendly collaborations, and feedback on anything I

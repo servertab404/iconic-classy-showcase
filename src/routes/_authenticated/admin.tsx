@@ -265,7 +265,7 @@ function ProjectsTab({ projects, refresh, onError, setNotice }: TabProps & { pro
   });
 
   const mutation = useMutation({
-    mutationFn: (payload: Parameters<typeof save>[0]["data"]) => save({ data: payload }),
+    mutationFn: (payload: ReturnType<typeof toPayload>) => save({ data: payload }),
     onSuccess: () => {
       setNotice("Saved.");
       setDraft(emptyProject);
@@ -374,7 +374,7 @@ function BlogTab({ posts, refresh, onError, setNotice }: TabProps & { posts: Blo
   const [editDraft, setEditDraft] = useState(emptyPost);
 
   const mutation = useMutation({
-    mutationFn: (payload: Parameters<typeof save>[0]["data"]) => save({ data: payload }),
+    mutationFn: (payload: typeof emptyPost & { id?: string }) => save({ data: payload }),
     onSuccess: () => {
       setNotice("Saved.");
       setDraft(emptyPost);

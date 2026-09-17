@@ -16,12 +16,36 @@ import { GradientDivider } from "@/components/motion/GradientDivider";
 import { CustomCursor } from "@/components/motion/CustomCursor";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Cosmos } from "@/components/motion/Cosmos";
+import { buildSiteData, SiteDataProvider } from "@/lib/site-data";
+import {
+  getPublicBlogPosts,
+  getPublicProjects,
+  getSiteContent,
+} from "@/lib/content.functions";
 
 const TITLE = "Iconic Classy — BCA AI/ML Student & Aspiring ML Engineer";
 const DESCRIPTION =
   "Portfolio of Iconic Classy, a first-semester BCA AI/ML student at Galgotia University building fundamentals in Python and web development toward machine learning engineering.";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const [site, projects, posts] = await Promise.all([
+      getSiteContent(),
+      getPublicProjects(),
+      getPublicBlogPosts(),
+    ]);
+    return buildSiteData(site, projects, posts);
+  },
+  errorComponent: () => (
+    <div className="flex min-h-screen items-center justify-center px-6 text-center text-muted-foreground">
+      Something went wrong loading this page. Please refresh.
+    </div>
+  ),
+  notFoundComponent: () => (
+    <div className="flex min-h-screen items-center justify-center px-6 text-center text-muted-foreground">
+      Page not found.
+    </div>
+  ),
   head: () => ({
     meta: [
       { title: TITLE },
@@ -38,8 +62,10 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { scrollYProgress } = useScroll();
   const meshY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const siteData = Route.useLoaderData();
 
   return (
+    <SiteDataProvider value={siteData}>
     <div>
       <SmoothScroll />
       <CustomCursor />
@@ -78,5 +104,6 @@ function Index() {
 
       <SiteFooter />
     </div>
+    </SiteDataProvider>
   );
 }
