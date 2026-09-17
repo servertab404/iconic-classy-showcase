@@ -62,8 +62,10 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { scrollYProgress } = useScroll();
   const meshY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const siteData = Route.useLoaderData();
 
   return (
+    <SiteDataProvider value={siteData}>
     <div>
       <SmoothScroll />
       <CustomCursor />
@@ -102,5 +104,6 @@ function Index() {
 
       <SiteFooter />
     </div>
+    </SiteDataProvider>
   );
 }
