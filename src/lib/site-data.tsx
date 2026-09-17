@@ -25,14 +25,18 @@ export function SiteDataProvider({
   value,
   children,
 }: {
-  value: SiteData;
+  value: SiteData | undefined;
   children: React.ReactNode;
 }) {
-  return <SiteDataContext.Provider value={value}>{children}</SiteDataContext.Provider>;
+  return (
+    <SiteDataContext.Provider value={value ?? DEFAULT_SITE_DATA}>
+      {children}
+    </SiteDataContext.Provider>
+  );
 }
 
-export function useSiteData() {
-  return useContext(SiteDataContext);
+export function useSiteData(): SiteData {
+  return useContext(SiteDataContext) ?? DEFAULT_SITE_DATA;
 }
 
 export function buildSiteData(
