@@ -495,3 +495,132 @@ function BlogTab({ posts, refresh, onError, setNotice }: TabProps & { posts: Blo
 
 // Silence unused-import lint for useEffect if tree-shaken differently
 void useEffect;
+
+const emptyCert = { title: "", issuer: "", year: "", credential_url: "", published: true };
+
+function CertificationsTab({
+  certifications,
+  refresh,
+  onError,
+  setNotice,
+}: TabProps & { certifications: Certification[] }) {
+  const save = useServerFn(saveCertification);
+  const remove = useServerFn(deleteCertification);
+  const [draft, setDraft] = useState(emptyCert);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editDraft, setEditDraft] = useState(emptyCert);
+
+  const mutation = useMutation({
+    mutationFn: (payload: typeof emptyCert & { id?: string; sort_order: number }) =>
+      save({ data: payload }),
+    onSuccess: () => {
+      setNotice("Saved.");
+      setDraft(emptyCert);
+      setEditingId(null);
+      refresh();
+    },
+    onError,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => remove({ data: { id } }),
+    onSuccess: () => {
+      setNotice("Deleted.");
+      refresh();
+    },
+    onError,
+  });
+
+  const certForm = (
+    c: typeof emptyCert,
+    setC: (v: typeof emptyCert) => void,
+    id?: string,
+    sortOrder = 0,
+  ) => (
+    <div className="glass gradient-border space-y-4 rounded-2xl p-6">
+      <Field label="Title">
+        <input value={c.title} onChange={(e) => setC({ ...c, title: e.target.value })} className={inputCls} />
+      </Field>
+      <Field label="Issuer (e.g. Coursera, Google)">
+        <input value={c.issuer} onChange={(e) => setC({ ...c, issuer: e.target.value })} className={inputCls} />
+      </Field>
+      <Field label="Year">
+        <input value={c.year} onChange={(e) => setC({ ...c, year: e.target.value })} className={inputCls} />
+      </Field>
+      <Field label="Credential link (optional)">
+        <input
+          value={c.credential_url}
+          onChange={(e) => setC({ ...c, credential_url: e.target.value })}
+          className={inputCls}
+        />
+      </Field>
+      <label className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+        <input type="checkbox" checked={c.published} onChange={(e) => setC({ ...c, published: e.target.checked })} />
+        Published (visible on site)
+      </label>
+      <button
+        onClick={() => {
+          setNotice(null);
+          mutation.mutate({ ...(id ? { id } : {}), ...c, sort_order: sortOrder });
+        }}
+        disabled={mutation.isPending || !c.title.trim()}
+        className="bg-gradient-accent rounded-md px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+      >
+        {id ? "Save changes" : "Add certification"}
+      </button>
+    </div>
+  );
+
+  return (
+    <div className="space-y-6">
+      {certifications.map((cert) =>
+        editingId === cert.id ? (
+          <div key={cert.id}>
+            {certForm(editDraft, setEditDraft, cert.id, cert.sort_order)}
+            <button onClick={() => setEditingId(null)} className="mt-2 font-mono text-xs text-muted-foreground">
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <div key={cert.id} className="glass flex items-center justify-between gap-4 rounded-2xl p-5">
+            <div>
+              <p className="font-display font-semibold">{cert.title}</p>
+              <p className="font-mono text-xs text-muted-foreground">
+                {cert.published ? "Published" : "Hidden"} · {cert.issuer || "no issuer"}
+                {cert.year ? ` · ${cert.year}` : ""}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setEditingId(cert.id);
+                  setEditDraft({
+                    title: cert.title,
+                    issuer: cert.issuer,
+                    year: cert.year,
+                    credential_url: cert.credential_url,
+                    published: cert.published,
+                  });
+                }}
+                className="rounded-md border border-border px-3 py-1.5 font-mono text-xs hover:border-primary"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => deleteMutation.mutate(cert.id)}
+                className="rounded-md border border-border px-3 py-1.5 font-mono text-xs text-destructive hover:border-destructive"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ),
+      )}
+      {certifications.length === 0 ? (
+        <p className="text-sm text-muted-foreground">No certifications yet — add your first below.</p>
+      ) : null}
+      <h3 className="font-display text-lg font-semibold">Add a certification</h3>
+      {certForm(draft, setDraft, undefined, certifications.length)}
+    </div>
+  );
+}
