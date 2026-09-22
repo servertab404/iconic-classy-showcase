@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   deleteBlogPost,
+  deleteCertification,
   deleteProject,
   getAdminContent,
   saveBlogPost,
+  saveCertification,
   saveProject,
   upsertSiteContent,
 } from "@/lib/admin.functions";
-import type { BlogPost, Education, Project, Skill } from "@/lib/content";
+import type { BlogPost, Certification, Education, Project, Skill } from "@/lib/content";
 import { FALLBACK_CONTENT } from "@/lib/content";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -52,7 +54,7 @@ function AdminPage() {
   const queryClient = useQueryClient();
   const fetchAdmin = useServerFn(getAdminContent);
   const { data } = useQuery({ queryKey: ["admin-content"], queryFn: () => fetchAdmin() });
-  const [tab, setTab] = useState<"site" | "projects" | "blog">("site");
+  const [tab, setTab] = useState<"site" | "projects" | "certifications" | "blog">("site");
   const [notice, setNotice] = useState<string | null>(null);
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ["admin-content"] });
@@ -86,7 +88,7 @@ function AdminPage() {
       </div>
 
       <div className="mt-8 flex gap-2">
-        {(["site", "projects", "blog"] as const).map((t) => (
+        {(["site", "projects", "certifications", "blog"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -107,6 +109,14 @@ function AdminPage() {
         ) : null}
         {tab === "projects" && data ? (
           <ProjectsTab projects={data.projects} refresh={refresh} onError={onError} setNotice={setNotice} />
+        ) : null}
+        {tab === "certifications" && data ? (
+          <CertificationsTab
+            certifications={data.certifications}
+            refresh={refresh}
+            onError={onError}
+            setNotice={setNotice}
+          />
         ) : null}
         {tab === "blog" && data ? (
           <BlogTab posts={data.posts} refresh={refresh} onError={onError} setNotice={setNotice} />
