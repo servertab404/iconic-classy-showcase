@@ -271,13 +271,49 @@ function EmptyState({ title, body }: { title: string; body: string }) {
 }
 
 export function Certifications() {
+  const { certifications } = useSiteData();
   return (
     <Shell id="certifications">
-      <SectionHeading index="05" eyebrow="Certifications" title="Nothing here yet" />
-      <EmptyState
-        title="First certification coming soon"
-        body="I'd rather list one certificate I actually earned than pad this section. Watch this space."
+      <SectionHeading
+        index="05"
+        eyebrow="Certifications"
+        title={certifications.length ? "Earned so far" : "Nothing here yet"}
       />
+      {certifications.length === 0 ? (
+        <EmptyState
+          title="First certification coming soon"
+          body="I'd rather list one certificate I actually earned than pad this section. Watch this space."
+        />
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2">
+          {certifications.map((cert, i) => (
+            <Reveal key={cert.id} delay={i * 0.1}>
+              <TiltCard className="flex h-full flex-col p-7">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="font-display text-xl font-semibold">{cert.title}</h3>
+                  <span className="font-mono text-xs text-muted-foreground">{cert.year}</span>
+                </div>
+                {cert.issuer ? (
+                  <p className="mt-2 font-mono text-[11px] tracking-[0.2em] text-amber uppercase">
+                    {cert.issuer}
+                  </p>
+                ) : null}
+                {cert.credential_url ? (
+                  <a
+                    href={cert.credential_url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="mt-6 inline-flex items-center gap-2 font-mono text-xs tracking-widest text-foreground uppercase transition-colors hover:text-cyan"
+                  >
+                    View credential
+                    <ArrowUpRight className="size-4" />
+                  </a>
+                ) : null}
+              </TiltCard>
+            </Reveal>
+          ))}
+        </div>
+      )}
     </Shell>
   );
 }

@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
-import type { BlogPost, Project, SiteContent } from "./content";
+import type { BlogPost, Certification, Project, SiteContent } from "./content";
 
 function publicClient() {
   const url = process.env["SUPABASE_URL"]!;
@@ -42,6 +42,19 @@ export const getPublicProjects = createServerFn({ method: "GET" }).handler(
       .order("sort_order", { ascending: true });
     if (error || !data) return null;
     return data as Project[];
+  },
+);
+
+export const getPublicCertifications = createServerFn({ method: "GET" }).handler(
+  async (): Promise<Certification[] | null> => {
+    const supabase = publicClient();
+    const { data, error } = await supabase
+      .from("certifications")
+      .select("id, title, issuer, year, credential_url, sort_order, published")
+      .eq("published", true)
+      .order("sort_order", { ascending: true });
+    if (error || !data) return null;
+    return data as Certification[];
   },
 );
 

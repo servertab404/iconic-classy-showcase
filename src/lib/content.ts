@@ -18,6 +18,16 @@ export type Project = {
   published: boolean;
 };
 
+export type Certification = {
+  id: string;
+  title: string;
+  issuer: string;
+  year: string;
+  credential_url: string;
+  sort_order: number;
+  published: boolean;
+};
+
 export type BlogPost = {
   id: string;
   title: string;

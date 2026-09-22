@@ -3,6 +3,7 @@ import {
   FALLBACK_CONTENT,
   FALLBACK_PROJECTS,
   type BlogPost,
+  type Certification,
   type Project,
   type SiteContent,
 } from "./content";
@@ -11,12 +12,14 @@ export type SiteData = {
   content: SiteContent;
   projects: Project[];
   posts: BlogPost[];
+  certifications: Certification[];
 };
 
 export const DEFAULT_SITE_DATA: SiteData = {
   content: FALLBACK_CONTENT,
   projects: FALLBACK_PROJECTS,
   posts: [],
+  certifications: [],
 };
 
 const SiteDataContext = createContext<SiteData>(DEFAULT_SITE_DATA);
@@ -43,6 +46,7 @@ export function buildSiteData(
   site: Partial<SiteContent> | null,
   projects: Project[] | null,
   posts: BlogPost[] | null,
+  certifications: Certification[] | null = null,
 ): SiteData {
   const content: SiteContent = {
     hero_tagline: site?.hero_tagline || FALLBACK_CONTENT.hero_tagline,
@@ -58,5 +62,6 @@ export function buildSiteData(
     content,
     projects: projects && projects.length ? projects : FALLBACK_PROJECTS,
     posts: posts ?? [],
+    certifications: certifications ?? [],
   };
 }
