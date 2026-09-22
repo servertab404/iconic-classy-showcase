@@ -1,7 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import type { BlogPost, Project, SiteContent } from "./content";
+import type { BlogPost, Certification, Project, SiteContent } from "./content";
+
+const certInput = z.object({
+  id: z.string().optional(),
+  title: z.string().min(1),
+  issuer: z.string().default(""),
+  year: z.string().default(""),
+  credential_url: z.string().default(""),
+  sort_order: z.number().int().default(0),
+  published: z.boolean().default(true),
+});
 
 const projectInput = z.object({
   id: z.string().optional(),
@@ -99,6 +109,28 @@ export const deleteBlogPost = createServerFn({ method: "POST" })
   .inputValidator((data) => z.object({ id: z.string() }).parse(data))
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase.from("blog_posts").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const saveCertification = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) => certInput.parse(data))
+  .handler(async ({ data, context }) => {
+    const { id, ...fields } = data;
+    const query = id
+      ? context.supabase.from("certifications").update(fields).eq("id", id)
+      : context.supabase.from("certifications").insert(fields);
+    const { error } = await query;
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const deleteCertification = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) => z.object({ id: z.string() }).parse(data))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.from("certifications").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
