@@ -39,21 +39,25 @@ export const getAdminContent = createServerFn({ method: "GET" })
       site: Partial<SiteContent>;
       projects: Project[];
       posts: BlogPost[];
+      certifications: Certification[];
     }> => {
-    const [content, projects, posts] = await Promise.all([
+    const [content, projects, posts, certs] = await Promise.all([
       context.supabase.from("site_content").select("key, value"),
       context.supabase.from("projects").select("*").order("sort_order", { ascending: true }),
       context.supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
+      context.supabase.from("certifications").select("*").order("sort_order", { ascending: true }),
     ]);
     if (content.error) throw new Error(content.error.message);
     if (projects.error) throw new Error(projects.error.message);
     if (posts.error) throw new Error(posts.error.message);
+    if (certs.error) throw new Error(certs.error.message);
       const site: Record<string, unknown> = {};
       for (const row of content.data) site[row.key] = row.value;
       return {
         site: site as Partial<SiteContent>,
         projects: projects.data as Project[],
         posts: posts.data as BlogPost[],
+        certifications: certs.data as Certification[],
       };
     },
   );
