@@ -19,6 +19,7 @@ import { Cosmos } from "@/components/motion/Cosmos";
 import { buildSiteData, SiteDataProvider } from "@/lib/site-data";
 import {
   getPublicBlogPosts,
+  getPublicCertifications,
   getPublicProjects,
   getSiteContent,
 } from "@/lib/content.functions";
@@ -29,12 +30,13 @@ const DESCRIPTION =
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const [site, projects, posts] = await Promise.all([
+    const [site, projects, posts, certifications] = await Promise.all([
       getSiteContent(),
       getPublicProjects(),
       getPublicBlogPosts(),
+      getPublicCertifications(),
     ]);
-    return buildSiteData(site, projects, posts);
+    return buildSiteData(site, projects, posts, certifications);
   },
   errorComponent: () => (
     <div className="flex min-h-screen items-center justify-center px-6 text-center text-muted-foreground">
