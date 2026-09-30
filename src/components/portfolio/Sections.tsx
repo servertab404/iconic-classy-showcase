@@ -5,7 +5,7 @@ import { Reveal } from "../motion/Reveal";
 import { TiltCard } from "./TiltCard";
 import { MagneticLink } from "../motion/MagneticLink";
 import { useSiteData } from "@/lib/site-data";
-import type { Skill } from "@/lib/content";
+import type { Certification, Skill } from "@/lib/content";
 
 function SectionHeading({
   eyebrow,
@@ -270,6 +270,64 @@ function EmptyState({ title, body }: { title: string; body: string }) {
   );
 }
 
+function certImageSrc(url: string) {
+  if (/\.(png|jpe?g|webp|gif|avif)(\?.*)?$/i.test(url)) return url;
+  return `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=900`;
+}
+
+function CertPreview({ cert }: { cert: Certification }) {
+  const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const url = cert.credential_url?.trim();
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img?.complete) {
+      if (img.naturalWidth > 0) setLoaded(true);
+      else setFailed(true);
+    }
+  }, [url]);
+
+  if (url && !failed) {
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noreferrer noopener"
+        aria-label={`Open certificate: ${cert.title}`}
+        className="group relative block aspect-[4/3] overflow-hidden rounded-xl border border-border bg-muted/30"
+      >
+        {!loaded ? (
+          <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+            Loading preview…
+          </div>
+        ) : null}
+        <img
+          ref={imgRef}
+          src={certImageSrc(url)}
+          alt={`${cert.title} certificate`}
+          loading="lazy"
+          onLoad={() => setLoaded(true)}
+          onError={() => setFailed(true)}
+          className={`h-full w-full object-cover object-top transition-all duration-500 group-hover:scale-[1.03] ${loaded ? "opacity-100" : "opacity-0"}`}
+        />
+      </a>
+    );
+  }
+
+  return (
+    <div className="relative overflow-hidden rounded-xl border border-border px-6 py-8">
+      <div className="pointer-events-none absolute -top-12 -right-8 size-40 rounded-full border border-violet/15" aria-hidden="true" />
+      <div className="pointer-events-none absolute -bottom-10 -left-6 size-32 rounded-full border border-cyan/15" aria-hidden="true" />
+      <div className="relative flex items-start justify-between gap-3">
+        <p className="font-mono text-[10px] tracking-[0.2em] text-cyan uppercase">Iconic Classy · Learning record</p>
+        <Award className="size-5 shrink-0 text-amber" strokeWidth={1.25} aria-hidden="true" />
+      </div>
+      <p className="relative mt-8 font-display text-xl font-semibold sm:text-2xl">{cert.title}</p>
+    </div>
+  );
+}
+
 export function Certifications() {
   const { certifications } = useSiteData();
   return (
@@ -311,34 +369,13 @@ export function Certifications() {
           {certifications.map((cert, i) => (
             <Reveal key={cert.id} delay={i * 0.1}>
               <TiltCard className="flex h-full flex-col p-7">
-                <div className="relative overflow-hidden rounded-xl border border-border px-6 py-8">
-                  <div
-                    className="pointer-events-none absolute -top-12 -right-8 size-40 rounded-full border border-violet/15"
-                    aria-hidden="true"
-                  />
-                  <div
-                    className="pointer-events-none absolute -bottom-10 -left-6 size-32 rounded-full border border-cyan/15"
-                    aria-hidden="true"
-                  />
-                  <div className="relative flex items-start justify-between gap-3">
-                    <p className="font-mono text-[10px] tracking-[0.2em] text-cyan uppercase">
-                      Iconic Classy · Learning record
-                    </p>
-                    <Award className="size-5 shrink-0 text-amber" strokeWidth={1.25} aria-hidden="true" />
-                  </div>
-                  <p className="relative mt-8 font-display text-xl font-semibold sm:text-2xl">
-                    {cert.title}
-                  </p>
-                  <p className="relative mt-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
-                    {cert.issuer ? `Issued by ${cert.issuer}` : "Issuer pending"}
-                  </p>
-                </div>
+                <CertPreview cert={cert} />
                 <div className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
-                  <div>
-                    <p className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                      Year
+                  <div className="min-w-0">
+                    <p className="truncate font-display text-base font-semibold">{cert.title}</p>
+                    <p className="mt-1 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
+                      {[cert.issuer, cert.year].filter(Boolean).join(" · ")}
                     </p>
-                    <p className="mt-1 font-mono text-sm text-foreground">{cert.year}</p>
                   </div>
                   {cert.credential_url ? (
                     <a
