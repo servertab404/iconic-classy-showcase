@@ -362,11 +362,11 @@ export function Certifications() {
               <TiltCard className="flex h-full flex-col p-7">
                 <CertPreview cert={cert} />
                 <div className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
-                  <div>
-                    <p className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                      Year
+                  <div className="min-w-0">
+                    <p className="truncate font-display text-base font-semibold">{cert.title}</p>
+                    <p className="mt-1 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
+                      {[cert.issuer, cert.year].filter(Boolean).join(" · ")}
                     </p>
-                    <p className="mt-1 font-mono text-sm text-foreground">{cert.year}</p>
                   </div>
                   {cert.credential_url ? (
                     <a
