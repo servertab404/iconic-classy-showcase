@@ -311,26 +311,47 @@ export function Certifications() {
           {certifications.map((cert, i) => (
             <Reveal key={cert.id} delay={i * 0.1}>
               <TiltCard className="flex h-full flex-col p-7">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="font-display text-xl font-semibold">{cert.title}</h3>
-                  <span className="font-mono text-xs text-muted-foreground">{cert.year}</span>
-                </div>
-                {cert.issuer ? (
-                  <p className="mt-2 font-mono text-[11px] tracking-[0.2em] text-amber uppercase">
-                    {cert.issuer}
+                <div className="relative overflow-hidden rounded-xl border border-border px-6 py-8">
+                  <div
+                    className="pointer-events-none absolute -top-12 -right-8 size-40 rounded-full border border-violet/15"
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="pointer-events-none absolute -bottom-10 -left-6 size-32 rounded-full border border-cyan/15"
+                    aria-hidden="true"
+                  />
+                  <div className="relative flex items-start justify-between gap-3">
+                    <p className="font-mono text-[10px] tracking-[0.2em] text-cyan uppercase">
+                      Iconic Classy · Learning record
+                    </p>
+                    <Award className="size-5 shrink-0 text-amber" strokeWidth={1.25} aria-hidden="true" />
+                  </div>
+                  <p className="relative mt-8 font-display text-xl font-semibold sm:text-2xl">
+                    {cert.title}
                   </p>
-                ) : null}
-                {cert.credential_url ? (
-                  <a
-                    href={cert.credential_url}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="mt-6 inline-flex items-center gap-2 font-mono text-xs tracking-widest text-foreground uppercase transition-colors hover:text-cyan"
-                  >
-                    View credential
-                    <ArrowUpRight className="size-4" />
-                  </a>
-                ) : null}
+                  <p className="relative mt-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
+                    {cert.issuer ? `Issued by ${cert.issuer}` : "Issuer pending"}
+                  </p>
+                </div>
+                <div className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
+                  <div>
+                    <p className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+                      Year
+                    </p>
+                    <p className="mt-1 font-mono text-sm text-foreground">{cert.year}</p>
+                  </div>
+                  {cert.credential_url ? (
+                    <a
+                      href={cert.credential_url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-widest text-muted-foreground uppercase transition-colors hover:text-cyan"
+                    >
+                      Verify
+                      <ArrowUpRight className="size-3.5" />
+                    </a>
+                  ) : null}
+                </div>
               </TiltCard>
             </Reveal>
           ))}
