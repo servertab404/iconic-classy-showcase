@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
-import { ArrowUpRight, FileText, Github, GraduationCap, Linkedin, Mail } from "lucide-react";
+import { ArrowUpRight, Award, FileText, Github, GraduationCap, Linkedin, Mail } from "lucide-react";
 import { Reveal } from "../motion/Reveal";
 import { TiltCard } from "./TiltCard";
 import { MagneticLink } from "../motion/MagneticLink";
@@ -277,13 +277,35 @@ export function Certifications() {
       <SectionHeading
         index="05"
         eyebrow="Certifications"
-        title={certifications.length ? "Earned so far" : "Nothing here yet"}
+        title={certifications.length ? "Earned so far" : "The next milestone"}
       />
       {certifications.length === 0 ? (
-        <EmptyState
-          title="First certification coming soon"
-          body="I'd rather list one certificate I actually earned than pad this section. Watch this space."
-        />
+        <Reveal>
+          <div className="max-w-2xl">
+            <TiltCard className="relative overflow-hidden border border-border p-6 sm:p-10">
+              <div className="pointer-events-none absolute -right-10 -bottom-16 size-56 rounded-full border border-violet/15" aria-hidden="true" />
+              <div className="pointer-events-none absolute -right-2 -bottom-8 size-40 rounded-full border border-cyan/15" aria-hidden="true" />
+              <div className="relative flex items-start justify-between gap-4 border-b border-border pb-7">
+                <div>
+                  <p className="font-mono text-[10px] tracking-[0.2em] text-cyan uppercase">Iconic Classy / Learning record</p>
+                  <p className="mt-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">Certificate preview</p>
+                </div>
+                <Award className="size-8 shrink-0 text-amber" strokeWidth={1.25} aria-hidden="true" />
+              </div>
+              <div className="relative py-10 sm:py-14">
+                <p className="font-mono text-[11px] tracking-[0.2em] text-amber uppercase">Sample · Not earned</p>
+                <h3 className="mt-4 max-w-md font-display text-2xl font-semibold sm:text-4xl">A milestone in the making.</h3>
+                <p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
+                  A preview of how certificates will appear here. Real credentials will be listed when earned.
+                </p>
+              </div>
+              <div className="relative flex items-center justify-between gap-4 border-t border-border pt-5 font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase">
+                <span>Portfolio preview</span>
+                <span>Not a credential</span>
+              </div>
+            </TiltCard>
+          </div>
+        </Reveal>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2">
           {certifications.map((cert, i) => (
