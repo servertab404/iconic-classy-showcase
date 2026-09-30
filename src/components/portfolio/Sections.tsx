@@ -278,7 +278,15 @@ function certImageSrc(url: string) {
 function CertPreview({ cert }: { cert: Certification }) {
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
   const url = cert.credential_url?.trim();
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img?.complete) {
+      if (img.naturalWidth > 0) setLoaded(true);
+      else setFailed(true);
+    }
+  }, [url]);
 
   if (url && !failed) {
     return (
@@ -295,6 +303,7 @@ function CertPreview({ cert }: { cert: Certification }) {
           </div>
         ) : null}
         <img
+          ref={imgRef}
           src={certImageSrc(url)}
           alt={`${cert.title} certificate`}
           loading="lazy"
