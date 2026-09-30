@@ -311,28 +311,7 @@ export function Certifications() {
           {certifications.map((cert, i) => (
             <Reveal key={cert.id} delay={i * 0.1}>
               <TiltCard className="flex h-full flex-col p-7">
-                <div className="relative overflow-hidden rounded-xl border border-border px-6 py-8">
-                  <div
-                    className="pointer-events-none absolute -top-12 -right-8 size-40 rounded-full border border-violet/15"
-                    aria-hidden="true"
-                  />
-                  <div
-                    className="pointer-events-none absolute -bottom-10 -left-6 size-32 rounded-full border border-cyan/15"
-                    aria-hidden="true"
-                  />
-                  <div className="relative flex items-start justify-between gap-3">
-                    <p className="font-mono text-[10px] tracking-[0.2em] text-cyan uppercase">
-                      Iconic Classy · Learning record
-                    </p>
-                    <Award className="size-5 shrink-0 text-amber" strokeWidth={1.25} aria-hidden="true" />
-                  </div>
-                  <p className="relative mt-8 font-display text-xl font-semibold sm:text-2xl">
-                    {cert.title}
-                  </p>
-                  <p className="relative mt-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
-                    {cert.issuer ? `Issued by ${cert.issuer}` : "Issuer pending"}
-                  </p>
-                </div>
+                <CertPreview cert={cert} />
                 <div className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
                   <div>
                     <p className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
