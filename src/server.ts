@@ -1,3 +1,7 @@
+// Public backend address + publishable key (safe to ship) so hosts like Vercel need no env setup.
+process.env["SUPABASE_URL"] ||= "https://gyhwxpoptcvqdfxxvxhn.supabase.co";
+process.env["SUPABASE_PUBLISHABLE_KEY"] ||= "sb_publishable_oLZ-u9Gn5gdIp1PaY250fQ_d7jjOoQn";
+
 import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";

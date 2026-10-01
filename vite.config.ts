@@ -19,12 +19,6 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     server: { entry: "server" },
   },
-  vite: {
-    define: {
-      "process.env.SUPABASE_URL": JSON.stringify(BACKEND_URL),
-      "process.env.SUPABASE_PUBLISHABLE_KEY": JSON.stringify(BACKEND_KEY),
-    },
-  },
   // When building on Vercel, output Vercel's format (Lovable builds ignore this).
   ...(process.env["VERCEL"] ? { nitro: { preset: "vercel" } } : {}),
 });
