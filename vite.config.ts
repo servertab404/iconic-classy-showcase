@@ -13,5 +13,5 @@ export default defineConfig({
     server: { entry: "server" },
   },
   // When building on Vercel, output Vercel's format (Lovable builds ignore this).
-  ...(process.env.VERCEL ? { nitro: { preset: "vercel" } } : {}),
+  ...(process.env['VERCEL'] ? { nitro: { preset: "vercel" } } : {}),
 });
