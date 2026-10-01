@@ -23,10 +23,6 @@ export default defineConfig({
     define: {
       "process.env.SUPABASE_URL": JSON.stringify(BACKEND_URL),
       "process.env.SUPABASE_PUBLISHABLE_KEY": JSON.stringify(BACKEND_KEY),
-      "process.env['SUPABASE_URL']": JSON.stringify(BACKEND_URL),
-      "process.env['SUPABASE_PUBLISHABLE_KEY']": JSON.stringify(BACKEND_KEY),
-      'process.env["SUPABASE_URL"]': JSON.stringify(BACKEND_URL),
-      'process.env["SUPABASE_PUBLISHABLE_KEY"]': JSON.stringify(BACKEND_KEY),
     },
   },
   // When building on Vercel, output Vercel's format (Lovable builds ignore this).
